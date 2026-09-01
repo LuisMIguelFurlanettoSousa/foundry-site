@@ -55,3 +55,17 @@ test('imagens responsivas preservam a proporção original', async () => {
   // Validação
   assert.match(regraImagem, /height:\s*auto/);
 });
+
+test('o mascote final fica limpo e centralizado opticamente', async () => {
+  // Cenário
+  const css = await readFile(estilos, 'utf8');
+
+  // Ação
+  const regraMascote = css.match(/\.contact__mascot\s*\{[^}]+\}/)?.[0] ?? '';
+  const regraImagemMascote = css.match(/\.contact__mascot img\s*\{[^}]+\}/)?.[0] ?? '';
+
+  // Validação
+  assert.doesNotMatch(regraImagemMascote, /drop-shadow/);
+  assert.match(regraMascote, /justify-self:\s*center/);
+  assert.doesNotMatch(regraMascote, /transform:/);
+});
