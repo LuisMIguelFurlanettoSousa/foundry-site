@@ -67,4 +67,6 @@ Leia o [guia de contribuição](CONTRIBUTING.md) antes de abrir uma mudança.
 
 O código está sob a [licença MIT](LICENSE). A identidade, os logos e as imagens da Foundry pertencem aos respectivos titulares e não são redistribuídos como material de domínio público.
 
+Fotografia adicional de fundição por [Mehmet Turgut Kirkgoz no Pexels](https://www.pexels.com/photo/industrial-foundry-worker-pouring-molten-metal-37363778/).
+
 <p align="center">Gostou da execução? Deixe uma star para acompanhar o projeto.</p>

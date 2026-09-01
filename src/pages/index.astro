@@ -9,7 +9,7 @@ import fundicao from '../assets/brand/hero-fundicao.jpg';
 import logoEscuro from '../assets/brand/logo-creme-fundo-escuro.png';
 import mascote from '../assets/brand/mascote-lava.png';
 import mockup from '../assets/brand/mockup-projeto.jpeg';
-import poster from '../assets/brand/fundicao-poster.jpeg';
+import fundicaoLimpa from '../assets/brand/fundicao-limpa-pexels.jpeg';
 
 const etapas = [
   { numero: '01', nome: 'Matéria-prima', texto: 'A gente entende o negócio, o público e o material que já existe.' },
@@ -95,9 +95,9 @@ const perguntas = [
         </article>
         <article class="work-card work-card--poster reveal-item">
           <div class="work-card__media" data-slot="slot-trabalho-poster">
-            <Image src={poster} alt="Peça da Foundry com uma cena de fundição" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
+            <Image src={fundicaoLimpa} alt="Trabalhador cuidando do metal incandescente em uma fundição" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
           </div>
-          <div class="work-card__copy"><span>03 / Conversão</span><h3>Feito para converter.</h3><p>Cada seção ajuda o visitante a entender o próximo passo.</p></div>
+          <div class="work-card__copy"><span>03 / Conversão</span><h3>Feito para converter.</h3><p>Cada seção ajuda o visitante a entender o próximo passo.</p><small class="work-card__credit">Foto: Mehmet Turgut Kirkgoz / Pexels</small></div>
         </article>
         <aside class="work-quote reveal-item"><p>“Seu trabalho já é bom.<br />O site tem que <em>mostrar.</em>”</p><span>Foundry Inc · Manifesto</span></aside>
       </div>
@@ -113,9 +113,41 @@ const perguntas = [
       </div>
     </section>
 
+    <section id="diagnostico" class="diagnostic section-pad" aria-labelledby="titulo-diagnostico" data-diagnostico>
+      <div class="diagnostic__intro">
+        <SectionLabel index="05">Teste de peso</SectionLabel>
+        <h2 id="titulo-diagnostico" class="reveal">O que o seu site precisa <em>sustentar agora?</em></h2>
+        <p>Escolha o cenário mais próximo. A Foundry recomenda o primeiro movimento sem transformar a resposta em formulário.</p>
+      </div>
+
+      <div class="diagnostic__panel">
+        <div class="diagnostic__meter" aria-hidden="true">
+          <span class="diagnostic__meter-label">Temperatura da peça</span>
+          <div class="diagnostic__crucible"><i data-diagnostico-nivel></i></div>
+          <span class="diagnostic__meter-value" data-diagnostico-valor>00%</span>
+        </div>
+
+        <div class="diagnostic__content">
+          <p class="diagnostic__question">Qual frase descreve melhor o momento?</p>
+          <div class="diagnostic__options" role="group" aria-label="Estado atual do seu site">
+            <button type="button" data-diagnostico-opcao data-nivel="38" data-titulo="Começar pela fundação." data-texto="Antes de pensar em páginas, a Foundry organiza a mensagem central, o caminho do visitante e a ação que o site precisa gerar."><span>01</span>Ainda não tenho site.</button>
+            <button type="button" data-diagnostico-opcao data-nivel="68" data-titulo="Refundir o que já existe." data-texto="O primeiro movimento é separar o que ainda sustenta o negócio do que virou peso morto. Depois, estrutura e visual ganham uma direção única."><span>02</span>Meu site não representa o negócio.</button>
+            <button type="button" data-diagnostico-opcao data-nivel="92" data-titulo="Abrir caminho para a conversa." data-texto="A base já existe. A Foundry concentra o trabalho em hierarquia, prova e chamadas para transformar atenção em contato."><span>03</span>Meu site não gera conversas.</button>
+          </div>
+
+          <div class="diagnostic__result" aria-live="polite" data-diagnostico-resultado>
+            <span>Recomendação da forja</span>
+            <h3 data-diagnostico-titulo>Escolha uma matéria-prima.</h3>
+            <p data-diagnostico-texto>A resposta aparece aqui, sem pedir seu e-mail antes.</p>
+            <a class="text-link" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Conversar sobre o diagnóstico <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="perguntas" class="faq section-pad" aria-labelledby="titulo-perguntas">
       <div>
-        <SectionLabel index="05">Perguntas comuns</SectionLabel>
+        <SectionLabel index="06">Perguntas comuns</SectionLabel>
         <h2 id="titulo-perguntas" class="reveal">Pode perguntar.<br /><em>Principalmente o básico.</em></h2>
       </div>
       <div class="faq__list">
@@ -130,15 +162,17 @@ const perguntas = [
 
     <section id="contato" class="contact" aria-labelledby="titulo-contato">
       <div class="contact__flare" aria-hidden="true"></div>
-      <div class="contact__copy">
-        <SectionLabel index="06">Seu próximo site começa aqui</SectionLabel>
-        <h2 id="titulo-contato">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
-        <p>Conte o que você precisa. A gente olha, recomenda o caminho e você decide com calma.</p>
-        <a class="button button--paper" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Chamar no Instagram <ArrowIcon /></a>
-        <small>Se ainda não for a hora, tudo bem. Salve a Foundry para quando for.</small>
-      </div>
-      <div class="contact__mascot" data-slot="slot-cta-mascote">
-        <Image src={mascote} alt="Cadinho, o mascote em forma de chama da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
+      <div class="contact__inner">
+        <div class="contact__copy">
+          <SectionLabel index="07">Seu próximo site começa aqui</SectionLabel>
+          <h2 id="titulo-contato">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
+          <p>Conte o que você precisa. A gente olha, recomenda o caminho e você decide com calma.</p>
+          <a class="button button--paper" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Chamar no Instagram <ArrowIcon /></a>
+          <small>Se ainda não for a hora, tudo bem. Salve a Foundry para quando for.</small>
+        </div>
+        <div class="contact__mascot" data-slot="slot-cta-mascote">
+          <Image src={mascote} alt="Cadinho, o mascote em forma de chama da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
+        </div>
       </div>
     </section>
   </main>
@@ -154,6 +188,7 @@ const perguntas = [
     const progress = document.querySelector<HTMLElement>('[data-progress]');
     const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');
     const menu = document.querySelector<HTMLElement>('[data-menu]');
+    const diagnostico = document.querySelector<HTMLElement>('[data-diagnostico]');
 
     const atualizarProgresso = () => {
       if (!progress) return;
@@ -182,5 +217,23 @@ const perguntas = [
       menuButton?.setAttribute('aria-expanded', 'false');
       menu.removeAttribute('data-open');
     }));
+
+    diagnostico?.querySelectorAll<HTMLButtonElement>('[data-diagnostico-opcao]').forEach((opcao) => {
+      opcao.addEventListener('click', () => {
+        diagnostico.querySelectorAll('[data-diagnostico-opcao]').forEach((item) => item.removeAttribute('data-selected'));
+        opcao.setAttribute('data-selected', '');
+
+        const nivel = opcao.dataset.nivel ?? '0';
+        const medidor = diagnostico.querySelector<HTMLElement>('[data-diagnostico-nivel]');
+        const valor = diagnostico.querySelector<HTMLElement>('[data-diagnostico-valor]');
+        const titulo = diagnostico.querySelector<HTMLElement>('[data-diagnostico-titulo]');
+        const texto = diagnostico.querySelector<HTMLElement>('[data-diagnostico-texto]');
+
+        if (medidor) medidor.style.setProperty('--nivel', `${nivel}%`);
+        if (valor) valor.textContent = `${nivel}%`;
+        if (titulo) titulo.textContent = opcao.dataset.titulo ?? '';
+        if (texto) texto.textContent = opcao.dataset.texto ?? '';
+      });
+    });
   </script>
 </BaseLayout>

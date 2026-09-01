@@ -1,8 +1,12 @@
 ---
 import '@fontsource-variable/archivo';
+import '@fontsource-variable/archivo/wght-italic.css';
 import '@fontsource-variable/familjen-grotesk';
 import '@fontsource/ibm-plex-mono/400.css';
 import '../styles/global.css';
+import archivoNormal from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import archivoItalic from '@fontsource-variable/archivo/files/archivo-latin-wght-italic.woff2?url';
+import familjenNormal from '@fontsource-variable/familjen-grotesk/files/familjen-grotesk-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -22,6 +26,9 @@ const { title, description } = Astro.props;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <link rel="preload" href={archivoNormal} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivoItalic} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={familjenNormal} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.png" />
     <title>{title}</title>
   </head>

@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const pagina = new URL('../src/pages/index.astro', import.meta.url);
+const estilos = new URL('../src/styles/global.css', import.meta.url);
 
 test('a página mantém a promessa e uma única ação principal', async () => {
   // Cenário
@@ -23,10 +24,34 @@ test('a página entrega navegação e acessibilidade estrutural', async () => {
   const cabecalho = await readFile(new URL('../src/components/Header.astro', import.meta.url), 'utf8');
 
   // Ação
-  const secoesEsperadas = ['processo', 'trabalho', 'perguntas', 'contato'];
+  const secoesEsperadas = ['processo', 'trabalho', 'diagnostico', 'perguntas', 'contato'];
 
   // Validação
   for (const secao of secoesEsperadas) assert.match(html, new RegExp(`id=["']${secao}["']`));
   assert.match(html, /prefers-reduced-motion/);
   assert.match(`${html}\n${cabecalho}`, /aria-label=/);
+});
+
+test('o diagnóstico recomenda um caminho sem exigir formulário', async () => {
+  // Cenário
+  const html = await readFile(pagina, 'utf8');
+
+  // Ação
+  const escolhas = html.match(/<button[^>]+data-diagnostico-opcao/g) ?? [];
+
+  // Validação
+  assert.equal(escolhas.length, 3);
+  assert.match(html, /data-diagnostico-resultado/);
+  assert.match(html, /Teste de peso/i);
+});
+
+test('imagens responsivas preservam a proporção original', async () => {
+  // Cenário
+  const css = await readFile(estilos, 'utf8');
+
+  // Ação
+  const regraImagem = css.match(/img\s*\{[^}]+\}/)?.[0] ?? '';
+
+  // Validação
+  assert.match(regraImagem, /height:\s*auto/);
 });
