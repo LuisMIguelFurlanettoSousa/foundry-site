@@ -4,7 +4,7 @@
 
 # Foundry
 
-<p align="center"><strong>Landing page Astro para uma marca que transforma matéria bruta em presença digital capaz de sustentar o peso do negócio.</strong></p>
+<p align="center"><strong>Site Astro para uma marca que transforma matéria bruta em sites, identidades, software e agentes de IA.</strong></p>
 
 <p align="center">
   <a href="../../actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/LuisMIguelFurlanettoSousa/foundry-site/ci.yml?branch=main&style=flat-square&label=build" alt="Build"></a>
@@ -32,6 +32,9 @@ npm run dev
 - Imagens responsivas para reduzir transferência em telas menores
 - Identidade visual baseada no Brand Book oficial da Foundry
 - Narrativa de matéria-prima, calor, molde e presença
+- Catálogo de produtos sem preços, organizado pelo problema do cliente
+- Galeria com seis projetos entregues e links públicos verificáveis
+- Formulário de contato preparado para receber um endpoint de envio
 - Menu móvel acessível para orientar sem ocupar a tela
 - FAQ nativo com teclado e sem dependências
 - Efeitos de calor em CSS para evitar WebGL e bibliotecas pesadas
@@ -55,7 +58,7 @@ src/
 ├── assets/       # mídia otimizada pelo Astro
 ├── components/   # cabeçalho, ícones e rótulos
 ├── layouts/      # documento base e metadados
-├── pages/        # página inicial e erro 404
+├── pages/        # início, produtos, clientes e erro 404
 └── styles/       # tokens e sistema visual
 ```
 

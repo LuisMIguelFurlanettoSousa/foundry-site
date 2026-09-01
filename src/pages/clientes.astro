@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import ArrowIcon from '../components/ArrowIcon.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import analise from '../assets/clients/analise-ibraciv.webp';
+import destiny from '../assets/clients/destiny-dao.webp';
+import portfolio from '../assets/clients/portfolio.webp';
+import supremus from '../assets/clients/supremus.webp';
+import tokenbitz from '../assets/clients/tokenbitz.webp';
+
+const projetos = [
+  { numero: '01', nome: 'Supremus — IBRACIV', tipo: 'Landing page · Mercado imobiliário', descricao: 'Plataforma de mentoria executiva com narrativa premium, prova social e fluxo de aplicação.', imagem: supremus, url: 'https://supremus.ibraciv.com/' },
+  { numero: '02', nome: 'Análise — IBRACIV', tipo: 'Diagnóstico · Vendas', descricao: 'Ferramenta guiada para diagnosticar a performance de corretores e entregar um resultado personalizado.', imagem: analise, url: 'https://analise.ibraciv.com/' },
+  { numero: '03', nome: 'TokenBitz', tipo: 'Landing multilíngue · Web3', descricao: 'Experiência internacional em múltiplos idiomas, conectada a whitepaper, contrato e dados do token.', imagem: tokenbitz, url: 'https://tokenbitz.info/' },
+  { numero: '04', nome: 'Destiny DAO — Docs', tipo: 'Documentação · Web3', descricao: 'Portal técnico com navegação lateral, gráficos de mercado e conteúdo disponível em mais de dez idiomas.', imagem: destiny, url: 'https://doc.destinydao.org/' },
+  { numero: '05', nome: 'Portfólio experimental', tipo: 'Experiência visual · Autoral', descricao: 'Composição digital com vídeo, movimento e experimentos WebGL para explorar novas linguagens de interface.', imagem: portfolio, url: 'https://about-victor.netlify.app/' },
+];
+---
+
+<BaseLayout title="Clientes e projetos | Foundry" description="Uma seleção de sites, produtos e automações já entregues pela equipe Foundry.">
+  <Header />
+  <main id="conteudo">
+    <section class="page-hero page-hero--clients" aria-labelledby="titulo-clientes">
+      <div class="page-hero__content">
+        <p class="eyebrow">Trabalhos selecionados <i></i> Projetos reais</p>
+        <h1 id="titulo-clientes">Ideias que já ganharam <em>forma.</em></h1>
+        <p>Sites, ferramentas e automações construídos para contextos diferentes, sempre com direção e cuidado.</p>
+        <a class="text-link" href="#projetos">Explorar projetos <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="page-hero__index" aria-hidden="true"><span>06</span><small>entregas<br />selecionadas</small></div>
+    </section>
+
+    <section id="projetos" class="cases section-pad" aria-labelledby="titulo-projetos">
+      <div class="cases__heading">
+        <SectionLabel index="01">Arquivo de clientes</SectionLabel>
+        <h2 id="titulo-projetos">Cada projeto pede<br /><em>uma liga diferente.</em></h2>
+      </div>
+
+      <div class="case-grid">
+        {projetos.map((projeto) => (
+          <article class="case-card">
+            <a href={projeto.url} target="_blank" rel="noreferrer" aria-label={`Visitar ${projeto.nome}`}>
+              <div class="case-card__media"><Image src={projeto.imagem} alt={`Tela do projeto ${projeto.nome}`} widths={[520, 900]} sizes="(min-width: 900px) 48vw, 100vw" loading="lazy" /></div>
+              <div class="case-card__copy">
+                <div><span>{projeto.numero}</span><span>{projeto.tipo}</span></div>
+                <h3>{projeto.nome}</h3>
+                <p>{projeto.descricao}</p>
+                <span class="text-link">Visitar projeto <b aria-hidden="true">↗</b></span>
+              </div>
+            </a>
+          </article>
+        ))}
+
+        <article class="case-card case-card--agent">
+          <div class="case-card__agent-visual" aria-hidden="true"><span>IA</span><i>24/7</i><b>Telegram</b></div>
+          <div class="case-card__copy">
+            <div><span>06</span><span>Automação · Inteligência artificial</span></div>
+            <h3>Bot de IA para Telegram</h3>
+            <p>Agente conectado a modelos de linguagem, com filtros, controle anti-spam, painel de status e operação em containers.</p>
+            <span class="case-card__private">Projeto sem endereço público</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-cta" aria-labelledby="titulo-cta-clientes">
+      <SectionLabel index="02">O próximo pode ser o seu</SectionLabel>
+      <h2 id="titulo-cta-clientes">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
+      <p>Conte o contexto. A Foundry recomenda o primeiro movimento e monta a solução certa.</p>
+      <a class="button button--paper" href="/#contato">Começar um projeto <ArrowIcon /></a>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

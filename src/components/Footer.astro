@@ -1,0 +1,10 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-creme-fundo-escuro.png';
+---
+
+<footer class="footer">
+  <Image src={logo} alt="Foundry" width={220} loading="lazy" />
+  <p>Sites que sustentam peso.</p>
+  <div><a href="/">Voltar ao início ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
+</footer>

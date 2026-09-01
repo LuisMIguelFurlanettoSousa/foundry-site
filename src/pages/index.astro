@@ -2,11 +2,11 @@
 import { Image } from 'astro:assets';
 import ArrowIcon from '../components/ArrowIcon.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import antesDepois from '../assets/brand/antes-depois.jpeg';
 import fundicao from '../assets/brand/hero-fundicao.jpg';
-import logoEscuro from '../assets/brand/logo-creme-fundo-escuro.png';
 import mascote from '../assets/brand/mascote-lava.png';
 import mockup from '../assets/brand/mockup-projeto.jpeg';
 import fundicaoLimpa from '../assets/brand/fundicao-limpa-pexels.jpeg';
@@ -202,17 +202,11 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     </section>
   </main>
 
-  <footer class="footer">
-    <Image src={logoEscuro} alt="Foundry" width={220} loading="lazy" />
-    <p>Sites que sustentam peso.</p>
-    <div><a href="#inicio">Voltar ao topo ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
-  </footer>
+  <Footer />
 
   <script>
     const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const progress = document.querySelector<HTMLElement>('[data-progress]');
-    const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');
-    const menu = document.querySelector<HTMLElement>('[data-menu]');
     const diagnostico = document.querySelector<HTMLElement>('[data-diagnostico]');
     const formulario = document.querySelector<HTMLFormElement>('[data-contact-form]');
 
@@ -232,17 +226,6 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     } else {
       document.querySelectorAll('.reveal, .reveal-item').forEach((elemento) => elemento.classList.add('is-visible'));
     }
-
-    menuButton?.addEventListener('click', () => {
-      const aberto = menuButton.getAttribute('aria-expanded') === 'true';
-      menuButton.setAttribute('aria-expanded', String(!aberto));
-      menu?.toggleAttribute('data-open', !aberto);
-    });
-
-    menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-      menuButton?.setAttribute('aria-expanded', 'false');
-      menu.removeAttribute('data-open');
-    }));
 
     diagnostico?.querySelectorAll<HTMLButtonElement>('[data-diagnostico-opcao]').forEach((opcao) => {
       opcao.addEventListener('click', () => {

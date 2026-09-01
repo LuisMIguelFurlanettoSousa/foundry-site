@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import ArrowIcon from '../components/ArrowIcon.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import fundicao from '../assets/brand/hero-fundicao.jpg';
+
+const produtos = [
+  {
+    numero: '01',
+    nome: 'Site essencial',
+    categoria: 'Presença digital',
+    descricao: 'Uma landing page direta, hospedada e pronta para apresentar o negócio com clareza.',
+    entregas: ['Landing page responsiva', 'Identidade visual para a página', 'Infraestrutura inicial inclusa'],
+  },
+  {
+    numero: '02',
+    nome: 'Site com domínio próprio',
+    categoria: 'Presença digital',
+    descricao: 'Uma presença com endereço próprio, construída para transmitir confiança e receber oportunidades.',
+    entregas: ['Domínio conectado à marca', 'Landing page responsiva', 'Identidade visual para a página', 'Infraestrutura inicial inclusa'],
+  },
+  {
+    numero: '03',
+    nome: 'Identidade completa',
+    categoria: 'Marca',
+    descricao: 'Marca, site e materiais de lançamento trabalhando como uma peça única.',
+    entregas: ['Site com domínio próprio', 'Identidade visual completa', 'Brandbook da marca', 'Três posts e três carrosséis para Instagram'],
+  },
+  {
+    numero: '04',
+    nome: 'Software sob medida',
+    categoria: 'Produto digital',
+    descricao: 'Sistemas construídos a partir da demanda, das regras do negócio e do nível de automação necessário.',
+    entregas: ['Descoberta da demanda', 'Arquitetura da solução', 'Interface e desenvolvimento', 'Escopo definido por complexidade'],
+  },
+  {
+    numero: '05',
+    nome: 'Agente de atendimento',
+    categoria: 'IA para WhatsApp',
+    descricao: 'Atendimento automatizado para empresas que recebem volume de conversas pelo WhatsApp.',
+    entregas: ['Respostas sobre serviços e produtos', 'Triagem inicial de contatos', 'Fluxos adaptados ao negócio', 'Integração com o canal da empresa'],
+  },
+  {
+    numero: '06',
+    nome: 'Agente avançado',
+    categoria: 'IA aplicada',
+    descricao: 'Uma operação autônoma capaz de conduzir conversas mais complexas e aprender com a base da empresa.',
+    entregas: ['Marca reuniões', 'Apresenta, vende e confirma produtos', 'Consulta conhecimento da empresa', 'Evolui com uma base vetorial'],
+  },
+  {
+    numero: '07',
+    nome: 'Fidelidade de marca',
+    categoria: 'Conteúdo contínuo',
+    descricao: 'Uma rotina mensal para manter a marca presente sem perder coerência visual.',
+    entregas: ['Seis posts por mês', 'Três carrosséis por mês', 'Consistência com a identidade', 'Linha editorial contínua'],
+  },
+];
+---
+
+<BaseLayout title="Produtos | Foundry" description="Sites, marcas, software e agentes de IA criados para dar forma ao próximo estágio do seu negócio.">
+  <Header />
+  <main id="conteudo">
+    <section class="page-hero page-hero--products" aria-labelledby="titulo-produtos">
+      <div class="page-hero__media"><Image src={fundicao} alt="Metal incandescente dentro de uma fundição" widths={[720, 1440, 2000]} sizes="100vw" loading="eager" fetchpriority="high" /></div>
+      <div class="page-hero__content">
+        <p class="eyebrow">Produtos Foundry <i></i> Escolha pelo problema</p>
+        <h1 id="titulo-produtos">Da presença à <em>operação.</em></h1>
+        <p>Sites, marcas, software e agentes de IA. A gente combina as peças certas para o momento do negócio.</p>
+        <a class="text-link" href="#catalogo">Ver o que fazemos <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <section id="catalogo" class="catalog section-pad" aria-labelledby="titulo-catalogo">
+      <div class="catalog__heading">
+        <SectionLabel index="01">O que sai da forja</SectionLabel>
+        <h2 id="titulo-catalogo">Uma necessidade.<br /><em>Uma forma certa.</em></h2>
+        <p>Você não precisa chegar sabendo o nome da solução. Conte onde o negócio está travando e a Foundry recomenda a composição.</p>
+      </div>
+      <div class="product-grid">
+        {produtos.map((produto) => (
+          <article class="product-card">
+            <div class="product-card__meta"><span>{produto.numero}</span><span>{produto.categoria}</span></div>
+            <h3>{produto.nome}</h3>
+            <p>{produto.descricao}</p>
+            <ul>{produto.entregas.map((entrega) => <li>{entrega}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="page-cta" aria-labelledby="titulo-cta-produtos">
+      <SectionLabel index="02">Composição sob medida</SectionLabel>
+      <h2 id="titulo-cta-produtos">Não achou uma caixa pronta?<br /><em>Melhor ainda.</em></h2>
+      <p>Sites, identidade, conteúdo e agentes podem formar um pacote coerente para a sua operação.</p>
+      <a class="button button--paper" href="/#contato">Contar o que preciso <ArrowIcon /></a>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
