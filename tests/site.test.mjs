@@ -15,7 +15,7 @@ test('a página mantém a promessa e uma única ação principal', async () => {
   // Validação
   assert.equal(titulosPrincipais.length, 1);
   assert.match(html, /doze dias/i);
-  assert.match(html, /instagram\.com\/foundry\.inc/);
+  assert.match(html, /href=["']#contato["']/);
 });
 
 test('a página entrega navegação e acessibilidade estrutural', async () => {
@@ -66,6 +66,22 @@ test('o mascote final fica limpo e centralizado opticamente', async () => {
 
   // Validação
   assert.doesNotMatch(regraImagemMascote, /drop-shadow/);
-  assert.match(regraMascote, /justify-self:\s*center/);
-  assert.doesNotMatch(regraMascote, /transform:/);
+  assert.match(regraMascote, /left:\s*75%/);
+  assert.match(regraMascote, /translateX\(-50%\)/);
+});
+
+test('o contato usa formulário preparado para envio por endpoint', async () => {
+  // Cenário
+  const html = await readFile(pagina, 'utf8');
+  const cabecalho = await readFile(new URL('../src/components/Header.astro', import.meta.url), 'utf8');
+
+  // Ação
+  const camposObrigatorios = html.match(/<(?:input|textarea)[^>]+required/g) ?? [];
+
+  // Validação
+  assert.match(html, /<form[^>]+data-contact-form/);
+  assert.match(html, /PUBLIC_FORM_ENDPOINT/);
+  assert.match(html, /aria-live=["']polite["']/);
+  assert.equal(camposObrigatorios.length, 3);
+  assert.doesNotMatch(`${html}\n${cabecalho}`, /href=["']https:\/\/www\.instagram\.com\/foundry\.inc/);
 });

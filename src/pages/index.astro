@@ -24,6 +24,8 @@ const perguntas = [
   ['Vocês refazem sites existentes?', 'Sim. Melhorar o que existe faz parte do trabalho.'],
   ['Posso perguntar o básico?', 'Pode perguntar o que quiser, inclusive o básico. Principalmente o básico.'],
 ];
+
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 ---
 
 <BaseLayout title="Foundry - Sites que sustentam peso" description="Sites e landing pages construídos com critério, entregues em doze dias.">
@@ -43,7 +45,7 @@ const perguntas = [
         <h1 id="titulo-principal">Seu trabalho já tem <em>peso.</em> O site precisa sustentar.</h1>
         <p class="hero__intro">A Foundry recebe o que existe, refaz com critério e entrega uma presença pronta para mostrar o valor do seu negócio.</p>
         <div class="hero__actions">
-          <a class="button button--fire" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Quero fundir meu site <ArrowIcon /></a>
+          <a class="button button--fire" href="#contato">Quero fundir meu site <ArrowIcon /></a>
           <a class="text-link" href="#processo">Ver como funciona <span aria-hidden="true">↓</span></a>
         </div>
         <p class="hero__note">Uma conversa direta. Sem compromisso e sem apresentação de 80 slides.</p>
@@ -139,7 +141,7 @@ const perguntas = [
             <span>Recomendação da forja</span>
             <h3 data-diagnostico-titulo>Escolha uma matéria-prima.</h3>
             <p data-diagnostico-texto>A resposta aparece aqui, sem pedir seu e-mail antes.</p>
-            <a class="text-link" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Conversar sobre o diagnóstico <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#contato">Conversar sobre o diagnóstico <span aria-hidden="true">↓</span></a>
           </div>
         </div>
       </div>
@@ -167,8 +169,31 @@ const perguntas = [
           <SectionLabel index="07">Seu próximo site começa aqui</SectionLabel>
           <h2 id="titulo-contato">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
           <p>Conte o que você precisa. A gente olha, recomenda o caminho e você decide com calma.</p>
-          <a class="button button--paper" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Chamar no Instagram <ArrowIcon /></a>
-          <small>Se ainda não for a hora, tudo bem. Salve a Foundry para quando for.</small>
+          <form class="contact-form" action={formEndpoint || undefined} method="post" data-contact-form data-endpoint={formEndpoint}>
+            <div class="contact-form__row">
+              <label>
+                <span>Seu nome</span>
+                <input type="text" name="nome" autocomplete="name" placeholder="Como podemos chamar você?" required />
+              </label>
+              <label>
+                <span>Seu e-mail</span>
+                <input type="email" name="email" autocomplete="email" placeholder="voce@empresa.com" required />
+              </label>
+            </div>
+            <label>
+              <span>Empresa <i>opcional</i></span>
+              <input type="text" name="empresa" autocomplete="organization" placeholder="Nome do negócio" />
+            </label>
+            <label>
+              <span>O que precisa ganhar forma?</span>
+              <textarea name="mensagem" rows="4" placeholder="Conte um pouco sobre o site, o momento e o que ele precisa resolver." required></textarea>
+            </label>
+            <input class="contact-form__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="contact-form__footer">
+              <button class="button button--paper" type="submit">Enviar projeto <ArrowIcon /></button>
+              <p class="contact-form__status" aria-live="polite" data-contact-status>O envio será ativado assim que o e-mail da Foundry for definido.</p>
+            </div>
+          </form>
         </div>
         <div class="contact__mascot" data-slot="slot-cta-mascote">
           <Image src={mascote} alt="Cadinho, o mascote em forma de chama da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
@@ -189,6 +214,7 @@ const perguntas = [
     const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');
     const menu = document.querySelector<HTMLElement>('[data-menu]');
     const diagnostico = document.querySelector<HTMLElement>('[data-diagnostico]');
+    const formulario = document.querySelector<HTMLFormElement>('[data-contact-form]');
 
     const atualizarProgresso = () => {
       if (!progress) return;
@@ -234,6 +260,43 @@ const perguntas = [
         if (titulo) titulo.textContent = opcao.dataset.titulo ?? '';
         if (texto) texto.textContent = opcao.dataset.texto ?? '';
       });
+    });
+
+    formulario?.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (!formulario.reportValidity()) return;
+
+      const endpoint = formulario.dataset.endpoint;
+      const status = formulario.querySelector<HTMLElement>('[data-contact-status]');
+      const botao = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+      if (!endpoint) {
+        if (status) status.textContent = 'Formulário pronto. O envio será liberado quando o e-mail da Foundry for conectado.';
+        formulario.dataset.state = 'pending';
+        return;
+      }
+
+      formulario.dataset.state = 'sending';
+      if (botao) botao.disabled = true;
+      if (status) status.textContent = 'Enviando sua matéria-prima...';
+
+      try {
+        const resposta = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(formulario),
+          headers: { Accept: 'application/json' },
+        });
+        if (!resposta.ok) throw new Error('Falha no envio');
+
+        formulario.reset();
+        formulario.dataset.state = 'success';
+        if (status) status.textContent = 'Recebido. A Foundry entra em contato assim que analisar o material.';
+      } catch {
+        formulario.dataset.state = 'error';
+        if (status) status.textContent = 'A peça não chegou à forja. Tente novamente em alguns instantes.';
+      } finally {
+        if (botao) botao.disabled = false;
+      }
     });
   </script>
 </BaseLayout>
