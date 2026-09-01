@@ -1,0 +1,21 @@
+{
+  "name": "foundry-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/familjen-grotesk": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "astro": "latest",
+    "sharp": "latest",
+    "typescript": "latest"
+  }
+}

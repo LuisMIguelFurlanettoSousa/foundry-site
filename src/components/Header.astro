@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-creme-fundo-escuro.png';
+---
+
+<header class="site-header" data-header>
+  <a class="brand" href="#inicio" aria-label="Foundry, voltar ao início">
+    <Image src={logo} alt="Foundry - Sites e landing pages" width={232} loading="eager" />
+  </a>
+
+  <button class="menu-button" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal" data-menu-button>
+    <span></span><span></span>
+  </button>
+
+  <nav id="menu-principal" class="site-nav" aria-label="Navegação principal" data-menu>
+    <a href="#processo">Processo</a>
+    <a href="#trabalho">Trabalho</a>
+    <a href="#perguntas">Perguntas</a>
+    <a class="button button--small" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Chamar a Foundry <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>

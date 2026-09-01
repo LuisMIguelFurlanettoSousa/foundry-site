@@ -1,0 +1,12 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import mascote from '../assets/brand/mascote-lava.png';
+---
+
+<BaseLayout title="Página não encontrada - Foundry" description="Esta peça ainda não ganhou forma.">
+  <main class="not-found">
+    <div><p class="eyebrow">Erro 404 · Fora do molde</p><h1>Essa página<br />não aguentou<br /><em>o peso.</em></h1><p>O Cadinho procurou, mas não encontrou nada por aqui.</p><a class="button button--fire" href="/">Voltar para o site</a></div>
+    <Image src={mascote} alt="Cadinho, mascote da Foundry" width={420} />
+  </main>
+</BaseLayout>

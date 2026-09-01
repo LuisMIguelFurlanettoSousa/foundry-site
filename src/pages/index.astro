@@ -1,0 +1,186 @@
+---
+import { Image } from 'astro:assets';
+import ArrowIcon from '../components/ArrowIcon.astro';
+import Header from '../components/Header.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import antesDepois from '../assets/brand/antes-depois.jpeg';
+import fundicao from '../assets/brand/hero-fundicao.jpg';
+import logoEscuro from '../assets/brand/logo-creme-fundo-escuro.png';
+import mascote from '../assets/brand/mascote-lava.png';
+import mockup from '../assets/brand/mockup-projeto.jpeg';
+import poster from '../assets/brand/fundicao-poster.jpeg';
+
+const etapas = [
+  { numero: '01', nome: 'Matéria-prima', texto: 'A gente entende o negócio, o público e o material que já existe.' },
+  { numero: '02', nome: 'Calor', texto: 'Organiza a mensagem, escolhe o que importa e define a direção.' },
+  { numero: '03', nome: 'Molde', texto: 'Design e desenvolvimento acontecem juntos, com teste em telas reais.' },
+  { numero: '04', nome: 'Presença', texto: 'O site vai ao ar pronto para explicar, convencer e receber contato.' },
+];
+
+const perguntas = [
+  ['Em quanto tempo fica pronto?', 'O prazo-base é de doze dias. Se algo mudar, você fica sabendo antes de precisar perguntar.'],
+  ['Preciso ter tudo pronto?', 'Não. A gente começa com o que você tem e recomenda o que falta.'],
+  ['Vocês refazem sites existentes?', 'Sim. Melhorar o que existe faz parte do trabalho.'],
+  ['Posso perguntar o básico?', 'Pode perguntar o que quiser, inclusive o básico. Principalmente o básico.'],
+];
+---
+
+<BaseLayout title="Foundry - Sites que sustentam peso" description="Sites e landing pages construídos com critério, entregues em doze dias.">
+  <div class="heat-progress" aria-hidden="true"><span data-progress></span></div>
+  <Header />
+
+  <main id="conteudo">
+    <section id="inicio" class="hero" aria-labelledby="titulo-principal">
+      <div class="hero__media" data-slot="slot-hero-fundicao">
+        <Image src={fundicao} alt="Metal incandescente sendo vertido de um cadinho em uma fundição" widths={[480, 960, 1700]} sizes="100vw" loading="eager" fetchpriority="high" quality={88} />
+        <div class="hero__heat" aria-hidden="true"></div>
+        <p class="hero__stamp"><span>12</span> dias para<br />ganhar forma</p>
+      </div>
+
+      <div class="hero__content">
+        <p class="eyebrow">Sites e landing pages <i></i> Entrega em 12 dias</p>
+        <h1 id="titulo-principal">Seu trabalho já tem <em>peso.</em> O site precisa sustentar.</h1>
+        <p class="hero__intro">A Foundry recebe o que existe, refaz com critério e entrega uma presença pronta para mostrar o valor do seu negócio.</p>
+        <div class="hero__actions">
+          <a class="button button--fire" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Quero fundir meu site <ArrowIcon /></a>
+          <a class="text-link" href="#processo">Ver como funciona <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="hero__note">Uma conversa direta. Sem compromisso e sem apresentação de 80 slides.</p>
+      </div>
+    </section>
+
+    <section class="manifesto section-pad" aria-labelledby="titulo-manifesto">
+      <SectionLabel index="01">Da matéria à presença</SectionLabel>
+      <div class="manifesto__grid">
+        <h2 id="titulo-manifesto" class="reveal">Fundir o <span>bruto</span><br />até virar presença.</h2>
+        <p>Um site bom não começa no efeito. Começa entendendo o que precisa ficar de pé. A gente corta o excesso, aquece a ideia e dá forma ao que o seu negócio já tem de melhor.</p>
+      </div>
+    </section>
+
+    <section id="processo" class="process section-pad" aria-labelledby="titulo-processo">
+      <div class="process__heading">
+        <SectionLabel index="02">O processo</SectionLabel>
+        <h2 id="titulo-processo" class="reveal">Doze dias.<br />Quatro movimentos.<br /><em>Um caminho claro.</em></h2>
+      </div>
+      <ol class="process__list">
+        {etapas.map((etapa) => (
+          <li class="process__item reveal-item">
+            <span class="process__number">{etapa.numero}</span>
+            <div><h3>{etapa.nome}</h3><p>{etapa.texto}</p></div>
+            <span class="process__spark" aria-hidden="true"></span>
+          </li>
+        ))}
+      </ol>
+      <p class="process__promise">Se algo mudar no prazo, você fica sabendo antes de perceber.</p>
+    </section>
+
+    <section id="trabalho" class="work section-pad" aria-labelledby="titulo-trabalho">
+      <div class="work__top">
+        <SectionLabel index="03">O que sai da forja</SectionLabel>
+        <h2 id="titulo-trabalho" class="reveal">Site bonito chama atenção.<br /><em>Site bem fundido segura.</em></h2>
+      </div>
+      <div class="work__grid">
+        <article class="work-card work-card--wide reveal-item">
+          <div class="work-card__media" data-slot="slot-trabalho-antes">
+            <Image src={antesDepois} alt="Comparação visual de um site antes e depois da reconstrução" widths={[640, 960, 1400]} sizes="(min-width: 800px) 62vw, 100vw" loading="lazy" />
+          </div>
+          <div class="work-card__copy"><span>01 / Transformação</span><h3>Antes e depois.</h3><p>Hierarquia, mensagem e ação reconstruídas como uma peça só.</p></div>
+        </article>
+        <article class="work-card reveal-item">
+          <div class="work-card__media" data-slot="slot-trabalho-mockup">
+            <Image src={mockup} alt="Aplicação editorial de um site em telas e materiais de marca" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
+          </div>
+          <div class="work-card__copy"><span>02 / Presença</span><h3>Pronto para mostrar.</h3><p>Layout responsivo, leitura rápida e presença consistente.</p></div>
+        </article>
+        <article class="work-card work-card--poster reveal-item">
+          <div class="work-card__media" data-slot="slot-trabalho-poster">
+            <Image src={poster} alt="Peça da Foundry com uma cena de fundição" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
+          </div>
+          <div class="work-card__copy"><span>03 / Conversão</span><h3>Feito para converter.</h3><p>Cada seção ajuda o visitante a entender o próximo passo.</p></div>
+        </article>
+        <aside class="work-quote reveal-item"><p>“Seu trabalho já é bom.<br />O site tem que <em>mostrar.</em>”</p><span>Foundry Inc · Manifesto</span></aside>
+      </div>
+    </section>
+
+    <section class="principles section-pad" aria-labelledby="titulo-principios">
+      <SectionLabel index="04">Como a gente trabalha</SectionLabel>
+      <h2 id="titulo-principios" class="reveal">Peso no resultado.<br /><em>Leveza na conversa.</em></h2>
+      <div class="principles__grid">
+        <article><span>01</span><h3>Prazo claro.</h3><p>Doze dias como referência e comunicação antes de qualquer mudança.</p></article>
+        <article><span>02</span><h3>Direção.</h3><p>A gente recomenda um caminho em vez de devolver um cardápio de decisões.</p></article>
+        <article><span>03</span><h3>Cuidado.</h3><p>Seu site é tratado como se fosse nosso. E do nosso a gente cuida bastante.</p></article>
+      </div>
+    </section>
+
+    <section id="perguntas" class="faq section-pad" aria-labelledby="titulo-perguntas">
+      <div>
+        <SectionLabel index="05">Perguntas comuns</SectionLabel>
+        <h2 id="titulo-perguntas" class="reveal">Pode perguntar.<br /><em>Principalmente o básico.</em></h2>
+      </div>
+      <div class="faq__list">
+        {perguntas.map(([pergunta, resposta], index) => (
+          <details class="faq__item">
+            <summary><span>{String(index + 1).padStart(2, '0')}</span>{pergunta}<i aria-hidden="true"></i></summary>
+            <p>{resposta}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="contato" class="contact" aria-labelledby="titulo-contato">
+      <div class="contact__flare" aria-hidden="true"></div>
+      <div class="contact__copy">
+        <SectionLabel index="06">Seu próximo site começa aqui</SectionLabel>
+        <h2 id="titulo-contato">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
+        <p>Conte o que você precisa. A gente olha, recomenda o caminho e você decide com calma.</p>
+        <a class="button button--paper" href="https://www.instagram.com/foundry.inc/" target="_blank" rel="noreferrer">Chamar no Instagram <ArrowIcon /></a>
+        <small>Se ainda não for a hora, tudo bem. Salve a Foundry para quando for.</small>
+      </div>
+      <div class="contact__mascot" data-slot="slot-cta-mascote">
+        <Image src={mascote} alt="Cadinho, o mascote em forma de chama da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <Image src={logoEscuro} alt="Foundry" width={220} loading="lazy" />
+    <p>Sites que sustentam peso.</p>
+    <div><a href="#inicio">Voltar ao topo ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
+  </footer>
+
+  <script>
+    const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const progress = document.querySelector<HTMLElement>('[data-progress]');
+    const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+    const atualizarProgresso = () => {
+      if (!progress) return;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    };
+
+    if (!reduzMovimento) {
+      const observer = new IntersectionObserver((entradas) => {
+        entradas.forEach((entrada) => entrada.isIntersecting && entrada.target.classList.add('is-visible'));
+      }, { threshold: 0.16 });
+      document.querySelectorAll('.reveal, .reveal-item').forEach((elemento) => observer.observe(elemento));
+      window.addEventListener('scroll', atualizarProgresso, { passive: true });
+      atualizarProgresso();
+    } else {
+      document.querySelectorAll('.reveal, .reveal-item').forEach((elemento) => elemento.classList.add('is-visible'));
+    }
+
+    menuButton?.addEventListener('click', () => {
+      const aberto = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!aberto));
+      menu?.toggleAttribute('data-open', !aberto);
+    });
+
+    menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+      menuButton?.setAttribute('aria-expanded', 'false');
+      menu.removeAttribute('data-open');
+    }));
+  </script>
+</BaseLayout>
