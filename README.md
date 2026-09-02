@@ -31,15 +31,17 @@ npm run dev
 - Astro estático para entregar conteúdo com JavaScript mínimo
 - Imagens responsivas para reduzir transferência em telas menores
 - Identidade visual baseada no Brand Book oficial da Foundry
-- Narrativa de matéria-prima, calor, molde e presença
+- Fundo por seção com imagem e véu de opacidade em camada própria, sempre abaixo do conteúdo
+- Linguagem direta, escrita para o cliente entender sem jargão
 - Catálogo de produtos sem preços, organizado pelo problema do cliente
 - Galeria com seis projetos entregues e links públicos verificáveis
 - Formulário de contato preparado para receber um endpoint de envio
 - Menu móvel acessível para orientar sem ocupar a tela
 - FAQ nativo com teclado e sem dependências
+- Stickers do Foguinho recortados por script, com alpha limpo e contorno uniforme
 - Efeitos de calor em CSS para evitar WebGL e bibliotecas pesadas
 - Respeito a `prefers-reduced-motion` para reduzir animações
-- Página 404 própria com o mascote Cadinho
+- Página 404 própria com o mascote Foguinho
 - Testes estruturais e verificação de tipos no CI
 
 ## Comandos
@@ -54,12 +56,22 @@ npm run preview  # serve a build de produção
 ## Estrutura
 
 ```text
+public/
+└── fundos/       # imagens de fundo das seções (ver docs/fundos.md)
+scripts/
+└── stickers.mjs  # recorta os stickers do Foguinho a partir dos arquivos de marca
 src/
 ├── assets/       # mídia otimizada pelo Astro
 ├── components/   # cabeçalho, ícones e rótulos
 ├── layouts/      # documento base e metadados
 ├── pages/        # início, produtos, clientes e erro 404
 └── styles/       # tokens e sistema visual
+```
+
+Para regerar os stickers a partir dos PNGs 1000×1000 do Brand Book:
+
+```bash
+node scripts/stickers.mjs "caminho/para/Stickers"
 ```
 
 ## Contribuição

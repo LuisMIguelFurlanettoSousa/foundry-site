@@ -42,7 +42,8 @@ test('o diagnóstico recomenda um caminho sem exigir formulário', async () => {
   // Validação
   assert.equal(escolhas.length, 3);
   assert.match(html, /data-diagnostico-resultado/);
-  assert.match(html, /Teste de peso/i);
+  assert.match(html, /id=["']diagnostico["']/);
+  assert.match(html, /sem pedir o seu e-mail/i);
 });
 
 test('imagens responsivas preservam a proporção original', async () => {

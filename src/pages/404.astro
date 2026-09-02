@@ -1,12 +1,23 @@
 ---
 import { Image } from 'astro:assets';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import mascote from '../assets/brand/mascote-lava.png';
+import sticker06 from '../assets/stickers/sticker-06.png';
 ---
 
-<BaseLayout title="Página não encontrada - Foundry" description="Esta peça ainda não ganhou forma.">
-  <main class="not-found">
-    <div><p class="eyebrow">Erro 404 · Fora do molde</p><h1>Essa página<br />não aguentou<br /><em>o peso.</em></h1><p>O Cadinho procurou, mas não encontrou nada por aqui.</p><a class="button button--fire" href="/">Voltar para o site</a></div>
-    <Image src={mascote} alt="Cadinho, mascote da Foundry" width={420} />
+<BaseLayout title="Página não encontrada - Foundry" description="Essa página não existe.">
+  <Header />
+  <main id="conteudo" class="not-found-section section-shell">
+    <div class="not-found">
+      <div>
+        <Image src={sticker06} alt="Foguinho dormindo" width={72} densities={[1, 2]} class="sticker sticker--sleep sticker--solto" />
+        <p class="eyebrow">Erro 404</p>
+        <h1>Essa página<br /><em>não existe.</em></h1>
+        <p>O Foguinho procurou em tudo quanto é canto e não achou o que você estava tentando abrir.</p>
+        <a class="button button--fire" href="/">Voltar para o início</a>
+      </div>
+    </div>
   </main>
+  <Footer />
 </BaseLayout>

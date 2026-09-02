@@ -3,171 +3,208 @@ import { Image } from 'astro:assets';
 import ArrowIcon from '../components/ArrowIcon.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import SectionLabel from '../components/SectionLabel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import antesDepois from '../assets/brand/antes-depois.jpeg';
 import fundicao from '../assets/brand/hero-fundicao.jpg';
-import mascote from '../assets/brand/mascote-lava.png';
+import mascote from '../assets/brand/mascote-creme.png';
 import mockup from '../assets/brand/mockup-projeto.jpeg';
 import fundicaoLimpa from '../assets/brand/fundicao-limpa-pexels.jpeg';
+import sticker01 from '../assets/stickers/sticker-01.png';
+import sticker02 from '../assets/stickers/sticker-02.png';
+import sticker03 from '../assets/stickers/sticker-03.png';
+import sticker04 from '../assets/stickers/sticker-04.png';
+import sticker05 from '../assets/stickers/sticker-05.png';
 
 const etapas = [
-  { numero: '01', nome: 'Matéria-prima', texto: 'A gente entende o negócio, o público e o material que já existe.' },
-  { numero: '02', nome: 'Calor', texto: 'Organiza a mensagem, escolhe o que importa e define a direção.' },
-  { numero: '03', nome: 'Molde', texto: 'Design e desenvolvimento acontecem juntos, com teste em telas reais.' },
-  { numero: '04', nome: 'Presença', texto: 'O site vai ao ar pronto para explicar, convencer e receber contato.' },
+  { numero: '01', nome: 'Conversa', texto: 'A gente entende o seu negócio, quem é o seu cliente e o que você já tem pronto.' },
+  { numero: '02', nome: 'Planejamento', texto: 'Definimos o que o site precisa dizer, em que ordem e para onde ele leva quem chega.' },
+  { numero: '03', nome: 'Criação', texto: 'Design e programação andam juntos, testados no celular e no computador de verdade.' },
+  { numero: '04', nome: 'No ar', texto: 'O site entra no ar pronto para receber visitas e gerar contato.' },
 ];
 
 const perguntas = [
-  ['Em quanto tempo fica pronto?', 'O prazo-base é de doze dias. Se algo mudar, você fica sabendo antes de precisar perguntar.'],
-  ['Preciso ter tudo pronto?', 'Não. A gente começa com o que você tem e recomenda o que falta.'],
-  ['Vocês refazem sites existentes?', 'Sim. Melhorar o que existe faz parte do trabalho.'],
+  ['Em quanto tempo fica pronto?', 'O prazo é de doze dias. Se algo mudar, você fica sabendo antes de precisar perguntar.'],
+  ['Preciso ter tudo pronto?', 'Não. A gente começa com o que você tem e diz o que falta.'],
+  ['Vocês refazem sites que já existem?', 'Sim. Melhorar o que já está no ar faz parte do trabalho.'],
   ['Posso perguntar o básico?', 'Pode perguntar o que quiser, inclusive o básico. Principalmente o básico.'],
 ];
 
 const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 ---
 
-<BaseLayout title="Foundry - Sites que sustentam peso" description="Sites e landing pages construídos com critério, entregues em doze dias.">
+<BaseLayout title="Foundry - Sites que explicam o seu negócio" description="Sites e landing pages feitos do começo ao fim, prontos em doze dias.">
   <div class="heat-progress" aria-hidden="true"><span data-progress></span></div>
   <Header />
 
   <main id="conteudo">
-    <section id="inicio" class="hero" aria-labelledby="titulo-principal">
+    <section id="inicio" class="hero section-shell" aria-labelledby="titulo-principal">
       <div class="hero__media" data-slot="slot-hero-fundicao">
-        <Image src={fundicao} alt="Metal incandescente sendo vertido de um cadinho em uma fundição" widths={[480, 960, 1700]} sizes="100vw" loading="eager" fetchpriority="high" quality={88} />
+        <Image src={fundicao} alt="Metal incandescente sendo derramado em uma oficina" widths={[480, 960, 1700]} sizes="100vw" loading="eager" fetchpriority="high" quality={88} />
         <div class="hero__heat" aria-hidden="true"></div>
-        <p class="hero__stamp"><span>12</span> dias para<br />ganhar forma</p>
       </div>
 
       <div class="hero__content">
-        <p class="eyebrow">Sites e landing pages <i></i> Entrega em 12 dias</p>
-        <h1 id="titulo-principal">Seu trabalho já tem <em>peso.</em> O site precisa sustentar.</h1>
-        <p class="hero__intro">A Foundry recebe o que existe, refaz com critério e entrega uma presença pronta para mostrar o valor do seu negócio.</p>
+        <div class="hero__top-meta">
+          <p class="eyebrow">Sites e landing pages</p>
+          <Image src={sticker01} alt="Foguinho, o mascote da Foundry, acenando" width={58} densities={[1, 2]} class="sticker sticker--wave" loading="eager" />
+        </div>
+        <h1 id="titulo-principal">Seu trabalho é bom. O site precisa <em>mostrar isso.</em></h1>
+        <p class="hero__intro">A gente cria o site do seu negócio do começo ao fim: texto, design e programação. Você conta o que faz, a gente coloca no ar.</p>
         <div class="hero__actions">
-          <a class="button button--fire" href="#contato">Quero fundir meu site <ArrowIcon /></a>
+          <a class="button button--fire" href="#contato">Quero meu site <ArrowIcon /></a>
           <a class="text-link" href="#processo">Ver como funciona <span aria-hidden="true">↓</span></a>
         </div>
-        <p class="hero__note">Uma conversa direta. Sem compromisso e sem apresentação de 80 slides.</p>
+        <p class="hero__note">Uma conversa direta, sem compromisso.</p>
       </div>
     </section>
 
-    <section class="manifesto section-pad" aria-labelledby="titulo-manifesto">
-      <SectionLabel index="01">Da matéria à presença</SectionLabel>
-      <div class="manifesto__grid">
-        <h2 id="titulo-manifesto" class="reveal">Fundir o <span>bruto</span><br />até virar presença.</h2>
-        <p>Um site bom não começa no efeito. Começa entendendo o que precisa ficar de pé. A gente corta o excesso, aquece a ideia e dá forma ao que o seu negócio já tem de melhor.</p>
-      </div>
-    </section>
-
-    <section id="processo" class="process section-pad" aria-labelledby="titulo-processo">
-      <div class="process__heading">
-        <SectionLabel index="02">O processo</SectionLabel>
-        <h2 id="titulo-processo" class="reveal">Doze dias.<br />Quatro movimentos.<br /><em>Um caminho claro.</em></h2>
-      </div>
-      <ol class="process__list">
-        {etapas.map((etapa) => (
-          <li class="process__item reveal-item">
-            <span class="process__number">{etapa.numero}</span>
-            <div><h3>{etapa.nome}</h3><p>{etapa.texto}</p></div>
-            <span class="process__spark" aria-hidden="true"></span>
-          </li>
-        ))}
-      </ol>
-      <p class="process__promise">Se algo mudar no prazo, você fica sabendo antes de perceber.</p>
-    </section>
-
-    <section id="trabalho" class="work section-pad" aria-labelledby="titulo-trabalho">
-      <div class="work__top">
-        <SectionLabel index="03">O que sai da forja</SectionLabel>
-        <h2 id="titulo-trabalho" class="reveal">Site bonito chama atenção.<br /><em>Site bem fundido segura.</em></h2>
-      </div>
-      <div class="work__grid">
-        <article class="work-card work-card--wide reveal-item">
-          <div class="work-card__media" data-slot="slot-trabalho-antes">
-            <Image src={antesDepois} alt="Comparação visual de um site antes e depois da reconstrução" widths={[640, 960, 1400]} sizes="(min-width: 800px) 62vw, 100vw" loading="lazy" />
-          </div>
-          <div class="work-card__copy"><span>01 / Transformação</span><h3>Antes e depois.</h3><p>Hierarquia, mensagem e ação reconstruídas como uma peça só.</p></div>
-        </article>
-        <article class="work-card reveal-item">
-          <div class="work-card__media" data-slot="slot-trabalho-mockup">
-            <Image src={mockup} alt="Aplicação editorial de um site em telas e materiais de marca" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
-          </div>
-          <div class="work-card__copy"><span>02 / Presença</span><h3>Pronto para mostrar.</h3><p>Layout responsivo, leitura rápida e presença consistente.</p></div>
-        </article>
-        <article class="work-card work-card--poster reveal-item">
-          <div class="work-card__media" data-slot="slot-trabalho-poster">
-            <Image src={fundicaoLimpa} alt="Trabalhador cuidando do metal incandescente em uma fundição" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
-          </div>
-          <div class="work-card__copy"><span>03 / Conversão</span><h3>Feito para converter.</h3><p>Cada seção ajuda o visitante a entender o próximo passo.</p><small class="work-card__credit">Foto: Mehmet Turgut Kirkgoz / Pexels</small></div>
-        </article>
-        <aside class="work-quote reveal-item"><p>“Seu trabalho já é bom.<br />O site tem que <em>mostrar.</em>”</p><span>Foundry Inc · Manifesto</span></aside>
-      </div>
-    </section>
-
-    <section class="principles section-pad" aria-labelledby="titulo-principios">
-      <SectionLabel index="04">Como a gente trabalha</SectionLabel>
-      <h2 id="titulo-principios" class="reveal">Peso no resultado.<br /><em>Leveza na conversa.</em></h2>
-      <div class="principles__grid">
-        <article><span>01</span><h3>Prazo claro.</h3><p>Doze dias como referência e comunicação antes de qualquer mudança.</p></article>
-        <article><span>02</span><h3>Direção.</h3><p>A gente recomenda um caminho em vez de devolver um cardápio de decisões.</p></article>
-        <article><span>03</span><h3>Cuidado.</h3><p>Seu site é tratado como se fosse nosso. E do nosso a gente cuida bastante.</p></article>
-      </div>
-    </section>
-
-    <section id="diagnostico" class="diagnostic section-pad" aria-labelledby="titulo-diagnostico" data-diagnostico>
-      <div class="diagnostic__intro">
-        <SectionLabel index="05">Teste de peso</SectionLabel>
-        <h2 id="titulo-diagnostico" class="reveal">O que o seu site precisa <em>sustentar agora?</em></h2>
-        <p>Escolha o cenário mais próximo. A Foundry recomenda o primeiro movimento sem transformar a resposta em formulário.</p>
-      </div>
-
-      <div class="diagnostic__panel">
-        <div class="diagnostic__meter" aria-hidden="true">
-          <span class="diagnostic__meter-label">Temperatura da peça</span>
-          <div class="diagnostic__crucible"><i data-diagnostico-nivel></i></div>
-          <span class="diagnostic__meter-value" data-diagnostico-valor>00%</span>
-        </div>
-
-        <div class="diagnostic__content">
-          <p class="diagnostic__question">Qual frase descreve melhor o momento?</p>
-          <div class="diagnostic__options" role="group" aria-label="Estado atual do seu site">
-            <button type="button" data-diagnostico-opcao data-nivel="38" data-titulo="Começar pela fundação." data-texto="Antes de pensar em páginas, a Foundry organiza a mensagem central, o caminho do visitante e a ação que o site precisa gerar."><span>01</span>Ainda não tenho site.</button>
-            <button type="button" data-diagnostico-opcao data-nivel="68" data-titulo="Refundir o que já existe." data-texto="O primeiro movimento é separar o que ainda sustenta o negócio do que virou peso morto. Depois, estrutura e visual ganham uma direção única."><span>02</span>Meu site não representa o negócio.</button>
-            <button type="button" data-diagnostico-opcao data-nivel="92" data-titulo="Abrir caminho para a conversa." data-texto="A base já existe. A Foundry concentra o trabalho em hierarquia, prova e chamadas para transformar atenção em contato."><span>03</span>Meu site não gera conversas.</button>
-          </div>
-
-          <div class="diagnostic__result" aria-live="polite" data-diagnostico-resultado>
-            <span>Recomendação da forja</span>
-            <h3 data-diagnostico-titulo>Escolha uma matéria-prima.</h3>
-            <p data-diagnostico-texto>A resposta aparece aqui, sem pedir seu e-mail antes.</p>
-            <a class="text-link" href="#contato">Conversar sobre o diagnóstico <span aria-hidden="true">↓</span></a>
+    <div class="manifesto-section section-shell">
+      <section class="manifesto section-pad" aria-labelledby="titulo-manifesto">
+        <div class="manifesto__grid">
+          <h2 id="titulo-manifesto" class="reveal">Um site que <span>explica</span><br />o seu negócio.</h2>
+          <div>
+            <p>Site bom não é o mais enfeitado. É o que faz a pessoa entender o que você vende, por que confiar em você e como falar com você. A gente corta o excesso e deixa isso claro.</p>
+            <div class="manifesto__badge">
+              <Image src={sticker04} alt="Foguinho segurando um martelo" width={92} densities={[1, 2]} class="sticker sticker--hammer sticker--solto" loading="lazy" />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <section id="perguntas" class="faq section-pad" aria-labelledby="titulo-perguntas">
-      <div>
-        <SectionLabel index="06">Perguntas comuns</SectionLabel>
-        <h2 id="titulo-perguntas" class="reveal">Pode perguntar.<br /><em>Principalmente o básico.</em></h2>
-      </div>
-      <div class="faq__list">
-        {perguntas.map(([pergunta, resposta], index) => (
-          <details class="faq__item">
-            <summary><span>{String(index + 1).padStart(2, '0')}</span>{pergunta}<i aria-hidden="true"></i></summary>
-            <p>{resposta}</p>
-          </details>
-        ))}
-      </div>
-    </section>
+    <div class="process-section section-shell">
+      <section id="processo" class="process section-pad" aria-labelledby="titulo-processo">
+        <div class="process__heading">
+          <h2 id="titulo-processo" class="reveal">Doze dias.<br />Quatro etapas.<br /><em>Nenhuma surpresa.</em></h2>
+          <div class="process__heading-sticker">
+            <Image src={sticker02} alt="Foguinho trabalhando no laptop" width={88} densities={[1, 2]} class="sticker sticker--laptop sticker--solto" loading="lazy" />
+          </div>
+        </div>
+        <div>
+          <ol class="process__list">
+            {etapas.map((etapa) => (
+              <li class="process__item reveal-item">
+                <span class="process__number">{etapa.numero}</span>
+                <div><h3>{etapa.nome}</h3><p>{etapa.texto}</p></div>
+                <span class="process__spark" aria-hidden="true"></span>
+              </li>
+            ))}
+          </ol>
+          <p class="process__promise">Se o prazo mudar, você fica sabendo antes de perguntar.</p>
+        </div>
+      </section>
+    </div>
 
-    <section id="contato" class="contact" aria-labelledby="titulo-contato">
+    <div class="work-section section-shell">
+      <section id="trabalho" class="work section-pad" aria-labelledby="titulo-trabalho">
+        <div class="work__top">
+          <div>
+            <h2 id="titulo-trabalho" class="reveal">Site bonito chama atenção.<br /><em>Site bem feito traz cliente.</em></h2>
+          </div>
+          <div class="work__top-sticker">
+            <Image src={sticker03} alt="Foguinho aprovando com o polegar" width={88} densities={[1, 2]} class="sticker sticker--thumb sticker--solto" loading="lazy" />
+          </div>
+        </div>
+        <div class="work__grid">
+          <article class="work-card work-card--wide reveal-item">
+            <div class="work-card__media" data-slot="slot-trabalho-antes">
+              <Image src={antesDepois} alt="Comparação de um site antes e depois de ser refeito" widths={[640, 960, 1400]} sizes="(min-width: 800px) 62vw, 100vw" loading="lazy" />
+            </div>
+            <div class="work-card__copy"><span>01 / Antes e depois</span><h3>Refeito do zero.</h3><p>Texto, ordem das informações e botões reorganizados para a pessoa entender rápido.</p></div>
+          </article>
+          <article class="work-card reveal-item">
+            <div class="work-card__media" data-slot="slot-trabalho-mockup">
+              <Image src={mockup} alt="Site da marca aplicado em telas e materiais impressos" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
+            </div>
+            <div class="work-card__copy"><span>02 / No celular</span><h3>Bom em qualquer tela.</h3><p>Funciona bem no celular, carrega rápido e é fácil de ler.</p></div>
+          </article>
+          <article class="work-card work-card--poster reveal-item">
+            <div class="work-card__media" data-slot="slot-trabalho-poster">
+              <Image src={fundicaoLimpa} alt="Profissional trabalhando com metal incandescente" widths={[520, 760]} sizes="(min-width: 800px) 38vw, 100vw" loading="lazy" />
+            </div>
+            <div class="work-card__copy"><span>03 / Contato</span><h3>Feito para gerar contato.</h3><p>Cada parte da página ajuda quem está lendo a dar o próximo passo.</p><small class="work-card__credit">Foto: Mehmet Turgut Kirkgoz / Pexels</small></div>
+          </article>
+          <aside class="work-quote reveal-item">
+            <p>“Seu trabalho já é bom.<br />O site tem que <em>mostrar.</em>”</p>
+            <div class="work-quote__footer">
+              <span>Foundry</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+
+    <div class="principles-section section-shell">
+      <section class="principles section-pad" aria-labelledby="titulo-principios">
+        <h2 id="titulo-principios" class="reveal">Trabalho sério.<br /><em>Conversa leve.</em></h2>
+        <div class="principles__grid">
+          <article><span>01</span><h3>Prazo claro.</h3><p>Doze dias de prazo. Se mudar alguma coisa, a gente avisa antes.</p></article>
+          <article><span>02</span><h3>Direção.</h3><p>A gente recomenda um caminho em vez de jogar um monte de decisão em cima de você.</p></article>
+          <article><span>03</span><h3>Cuidado.</h3><p>Seu site é tratado como se fosse nosso. E do nosso a gente cuida bastante.</p></article>
+        </div>
+      </section>
+    </div>
+
+    <div class="diagnostic-section section-shell">
+      <section id="diagnostico" class="diagnostic section-pad" aria-labelledby="titulo-diagnostico" data-diagnostico>
+        <div class="diagnostic__intro">
+          <h2 id="titulo-diagnostico" class="reveal">O que o seu site precisa <em>resolver agora?</em></h2>
+          <p>Escolha a frase mais parecida com a sua situação. A gente responde o que fazer primeiro, sem pedir o seu e-mail antes.</p>
+        </div>
+
+        <div class="diagnostic__panel">
+          <div class="diagnostic__meter" aria-hidden="true">
+            <span class="diagnostic__meter-label">Situação do seu site</span>
+            <div class="diagnostic__crucible"><i data-diagnostico-nivel></i></div>
+            <span class="diagnostic__meter-value" data-diagnostico-valor>00%</span>
+          </div>
+
+          <div class="diagnostic__content">
+            <p class="diagnostic__question">Qual frase descreve melhor o seu momento?</p>
+            <div class="diagnostic__options" role="group" aria-label="Situação atual do seu site">
+              <button type="button" data-diagnostico-opcao data-nivel="38" data-titulo="Começar do zero." data-texto="Antes de pensar em páginas, a gente organiza o que o site precisa dizer, o caminho de quem chega e a ação que ele deve gerar."><span>01</span>Ainda não tenho site.</button>
+              <button type="button" data-diagnostico-opcao data-nivel="68" data-titulo="Refazer o que já existe." data-texto="O primeiro passo é separar o que ainda serve do que só atrapalha. Depois, estrutura e visual ganham uma direção só."><span>02</span>Meu site não representa o negócio.</button>
+              <button type="button" data-diagnostico-opcao data-nivel="92" data-titulo="Abrir caminho para o contato." data-texto="A base já existe. O trabalho se concentra na ordem das informações, nas provas e nos botões, para transformar visita em conversa."><span>03</span>Meu site não gera contato.</button>
+            </div>
+
+            <div class="diagnostic__result" aria-live="polite" data-diagnostico-resultado>
+              <div class="diagnostic__result-header">
+                <span>O que fazer primeiro</span>
+                <Image src={sticker05} alt="Foguinho comemorando" width={46} densities={[1, 2]} class="sticker sticker--cheer" loading="lazy" />
+              </div>
+              <h3 data-diagnostico-titulo>Escolha uma opção acima.</h3>
+              <p data-diagnostico-texto>A resposta aparece aqui.</p>
+              <a class="text-link" href="#contato">Falar sobre isso <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="faq-section section-shell">
+      <section id="perguntas" class="faq section-pad" aria-labelledby="titulo-perguntas">
+        <div>
+          <h2 id="titulo-perguntas" class="reveal">Dúvidas?<br /><em>Pode perguntar.</em></h2>
+          <div class="faq__heading-sticker">
+            <Image src={sticker05} alt="Foguinho pronto para responder" width={84} densities={[1, 2]} class="sticker sticker--cheer sticker--solto" loading="lazy" />
+          </div>
+        </div>
+        <div class="faq__list">
+          {perguntas.map(([pergunta, resposta], index) => (
+            <details class="faq__item">
+              <summary><span>{String(index + 1).padStart(2, '0')}</span>{pergunta}<i aria-hidden="true"></i></summary>
+              <p>{resposta}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <section id="contato" class="contact section-shell" aria-labelledby="titulo-contato">
       <div class="contact__flare" aria-hidden="true"></div>
       <div class="contact__inner">
         <div class="contact__copy">
-          <SectionLabel index="07">Seu próximo site começa aqui</SectionLabel>
-          <h2 id="titulo-contato">Tem algo bruto aí.<br /><em>Vamos dar forma?</em></h2>
+          <h2 id="titulo-contato">Vamos conversar<br /><em>sobre o seu site?</em></h2>
           <p>Conte o que você precisa. A gente olha, recomenda o caminho e você decide com calma.</p>
           <form class="contact-form" action={formEndpoint || undefined} method="post" data-contact-form data-endpoint={formEndpoint}>
             <div class="contact-form__row">
@@ -185,18 +222,18 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
               <input type="text" name="empresa" autocomplete="organization" placeholder="Nome do negócio" />
             </label>
             <label>
-              <span>O que precisa ganhar forma?</span>
-              <textarea name="mensagem" rows="4" placeholder="Conte um pouco sobre o site, o momento e o que ele precisa resolver." required></textarea>
+              <span>O que você precisa?</span>
+              <textarea name="mensagem" rows="4" placeholder="Conte um pouco sobre o site, o momento do negócio e o que ele precisa resolver." required></textarea>
             </label>
             <input class="contact-form__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <div class="contact-form__footer">
-              <button class="button button--paper" type="submit">Enviar projeto <ArrowIcon /></button>
+              <button class="button button--paper" type="submit">Enviar <ArrowIcon /></button>
               <p class="contact-form__status" aria-live="polite" data-contact-status>O envio será ativado assim que o e-mail da Foundry for definido.</p>
             </div>
           </form>
         </div>
         <div class="contact__mascot" data-slot="slot-cta-mascote">
-          <Image src={mascote} alt="Cadinho, o mascote em forma de chama da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
+          <Image src={mascote} alt="Foguinho, o mascote da Foundry" widths={[320, 520]} sizes="(min-width: 800px) 30vw, 52vw" loading="lazy" />
         </div>
       </div>
     </section>
@@ -261,7 +298,7 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 
       formulario.dataset.state = 'sending';
       if (botao) botao.disabled = true;
-      if (status) status.textContent = 'Enviando sua matéria-prima...';
+      if (status) status.textContent = 'Enviando...';
 
       try {
         const resposta = await fetch(endpoint, {
@@ -273,10 +310,10 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 
         formulario.reset();
         formulario.dataset.state = 'success';
-        if (status) status.textContent = 'Recebido. A Foundry entra em contato assim que analisar o material.';
+        if (status) status.textContent = 'Recebido. A gente entra em contato em breve.';
       } catch {
         formulario.dataset.state = 'error';
-        if (status) status.textContent = 'A peça não chegou à forja. Tente novamente em alguns instantes.';
+        if (status) status.textContent = 'Não foi possível enviar. Tente de novo em alguns instantes.';
       } finally {
         if (botao) botao.disabled = false;
       }

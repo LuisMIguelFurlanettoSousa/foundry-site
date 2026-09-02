@@ -9,7 +9,7 @@ test('a página de produtos organiza todas as frentes sem preços', async () => 
   const pagina = await readFile(new URL('pages/produtos.astro', raiz), 'utf8');
 
   // Ação
-  const frentes = ['Site essencial', 'Site com domínio próprio', 'Software sob medida', 'Agente de atendimento', 'Agente avançado', 'Fidelidade de marca'];
+  const frentes = ['Site essencial', 'Site com domínio próprio', 'Software sob medida', 'Atendente automático', 'Atendente avançado', 'Conteúdo mensal'];
 
   // Validação
   for (const frente of frentes) assert.match(pagina, new RegExp(frente, 'i'));
@@ -61,7 +61,7 @@ test('os textos das subpáginas mantêm contraste sobre papel e lava', async () 
   const estilos = await readFile(new URL('styles/global.css', raiz), 'utf8');
 
   // Ação
-  const rotuloCatalogo = estilos.match(/\.catalog \.section-label span\s*\{[^}]+\}/)?.[0] ?? '';
+  const rotuloCatalogo = estilos.match(/\.product-card__meta\s*\{[^}]+\}/)?.[0] ?? '';
   const textoCta = estilos.match(/\.page-cta > p\s*\{[^}]+\}/)?.[0] ?? '';
 
   // Validação

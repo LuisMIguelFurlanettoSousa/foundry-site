@@ -1,10 +1,14 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '../assets/brand/logo-creme-fundo-escuro.png';
+import foguinho from '../assets/brand/foguinho-branco.png';
 ---
 
-<footer class="footer">
-  <Image src={logo} alt="Foundry" width={220} loading="lazy" />
-  <p>Sites que sustentam peso.</p>
-  <div><a href="/">Voltar ao início ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
-</footer>
+<div class="footer-wrap section-shell">
+  <footer class="footer">
+    <a class="footer__marca" href="/" aria-label="Foundry, voltar ao início">
+      <Image src={foguinho} alt="Foguinho, o mascote da Foundry" width={64} densities={[1, 2]} loading="lazy" />
+    </a>
+    <p>Sites que explicam o seu negócio.</p>
+    <div><a href="/">Voltar ao início ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
+  </footer>
+</div>

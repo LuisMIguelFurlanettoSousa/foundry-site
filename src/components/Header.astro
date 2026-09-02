@@ -16,7 +16,7 @@ import logo from '../assets/brand/logo-creme-fundo-escuro.png';
     <a href="/#processo">Processo</a>
     <a href="/produtos">Produtos</a>
     <a href="/clientes">Clientes</a>
-    <a class="button button--small" href="/#contato">Chamar a Foundry <span aria-hidden="true">↓</span></a>
+    <a class="button button--small" href="/#contato">Falar com a gente <span aria-hidden="true">↓</span></a>
   </nav>
 </header>
 
@@ -24,14 +24,35 @@ import logo from '../assets/brand/logo-creme-fundo-escuro.png';
   const botaoMenu = document.querySelector<HTMLButtonElement>('[data-menu-button]');
   const menuPrincipal = document.querySelector<HTMLElement>('[data-menu]');
 
+  const definirMenu = (aberto: boolean) => {
+    botaoMenu?.setAttribute('aria-expanded', String(aberto));
+    botaoMenu?.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+    menuPrincipal?.toggleAttribute('data-open', aberto);
+    document.body.toggleAttribute('data-menu-aberto', aberto);
+  };
+
   botaoMenu?.addEventListener('click', () => {
-    const aberto = botaoMenu.getAttribute('aria-expanded') === 'true';
-    botaoMenu.setAttribute('aria-expanded', String(!aberto));
-    menuPrincipal?.toggleAttribute('data-open', !aberto);
+    definirMenu(botaoMenu.getAttribute('aria-expanded') !== 'true');
   });
 
-  menuPrincipal?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-    botaoMenu?.setAttribute('aria-expanded', 'false');
-    menuPrincipal.removeAttribute('data-open');
-  }));
+  menuPrincipal?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => definirMenu(false)));
+
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Escape' || botaoMenu?.getAttribute('aria-expanded') !== 'true') return;
+    definirMenu(false);
+    botaoMenu?.focus();
+  });
+
+  // Toque fora do painel fecha o menu.
+  document.addEventListener('click', (evento) => {
+    if (botaoMenu?.getAttribute('aria-expanded') !== 'true') return;
+    const alvo = evento.target as Node;
+    if (menuPrincipal?.contains(alvo) || botaoMenu.contains(alvo)) return;
+    definirMenu(false);
+  });
+
+  // Ao voltar para o desktop o menu não pode ficar travando a rolagem.
+  window.matchMedia('(min-width: 901px)').addEventListener('change', (evento) => {
+    if (evento.matches) definirMenu(false);
+  });
 </script>
