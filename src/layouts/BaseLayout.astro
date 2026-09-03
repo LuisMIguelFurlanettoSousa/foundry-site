@@ -31,9 +31,29 @@ const { title, description } = Astro.props;
     <link rel="preload" href={familjenNormal} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.png" />
     <title>{title}</title>
+    <noscript><style>.section-shell { --fundo-ativo: var(--fundo); }</style></noscript>
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <slot />
+    <script>
+      // Liga a imagem de fundo de cada seção só quando ela chega perto da
+      // tela. Ver .section-shell em global.css.
+      const secoes = document.querySelectorAll('.section-shell');
+      const ligar = (secao: Element) => secao.classList.add('fundo-pronto');
+
+      if ('IntersectionObserver' in window) {
+        const observador = new IntersectionObserver((entradas) => {
+          for (const entrada of entradas) {
+            if (!entrada.isIntersecting) continue;
+            ligar(entrada.target);
+            observador.unobserve(entrada.target);
+          }
+        }, { rootMargin: '600px 0px' });
+        secoes.forEach((secao) => observador.observe(secao));
+      } else {
+        secoes.forEach(ligar);
+      }
+    </script>
   </body>
 </html>

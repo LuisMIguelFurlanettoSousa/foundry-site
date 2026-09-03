@@ -5,10 +5,15 @@ import foguinho from '../assets/brand/foguinho-branco.png';
 
 <div class="footer-wrap section-shell">
   <footer class="footer">
-    <a class="footer__marca" href="/" aria-label="Foundry, voltar ao início">
-      <Image src={foguinho} alt="Foguinho, o mascote da Foundry" width={64} densities={[1, 2]} loading="lazy" />
-    </a>
-    <p>Sites que explicam o seu negócio.</p>
-    <div><a href="/">Voltar ao início ↑</a><span>© {new Date().getFullYear()} Foundry Inc.</span></div>
+    <div class="footer__marca">
+      <a href="/" aria-label="Foundry, voltar ao início">
+        <Image src={foguinho} alt="" width={40} densities={[1, 2]} loading="lazy" />
+      </a>
+      <p>Sites que explicam o seu negócio.</p>
+    </div>
+    <div class="footer__meta">
+      <a href="/">Voltar ao início ↑</a>
+      <span>© {new Date().getFullYear()} Foundry Inc.</span>
+    </div>
   </footer>
 </div>

@@ -14,9 +14,9 @@
   --margem-container: max(4vw, (100% - 1500px) / 2);
   --altura-header: 76px;
   --pad: clamp(7rem, 13vw, 14rem);
-  /* Altura do fade que dissolve a imagem de fundo na cor da seção, para a
-     emenda entre duas fotos diferentes não virar um corte seco. */
-  --fade-tam: 14%;
+  /* Altura do degradê que separa uma seção da outra, para a emenda não virar um
+     corte seco. Ele começa opaco na borda e some no meio da seção. */
+  --fade-tam: 24%;
   /* Véus aplicados por cima da imagem de fundo de cada seção. */
   --veu-escuro: rgba(0, 0, 0, .74);
   --veu-papel: rgba(242, 237, 228, .9);
@@ -130,47 +130,62 @@ button { color: inherit; font: inherit; }
   inset: 0;
   pointer-events: none;
 }
+/* A imagem só entra quando a seção se aproxima da tela (classe .fundo-pronto,
+   ver BaseLayout.astro). Sem isso o navegador baixava os fundos de todas as
+   seções de uma vez, no carregamento, competindo com o hero. Sem JavaScript o
+   <noscript> do layout liga todas de uma vez. */
 .section-shell::before {
   z-index: -2;
-  background-image: var(--fundo, none);
+  background-image: var(--fundo-ativo, none);
   background-position: var(--fundo-pos, center);
   background-size: cover;
   background-repeat: no-repeat;
 }
-/* Duas camadas: o fade nas bordas dissolve a imagem na cor da própria seção
-   (por isso ele acompanha --cor-base em vez de ser preto fixo — nas seções
-   claras e nas lava um preto chapado abriria uma faixa escura), e embaixo dele
-   o véu que baixa a opacidade da foto. */
+/* Duas camadas: em cima o degradê que separa as seções, preto absoluto nas duas
+   bordas e transparente no miolo; embaixo dele o véu, que é outra coisa — ele
+   baixa a opacidade da foto e continua por conta de cada seção.
+   O preto é fixo em vez de acompanhar --cor-base porque assim a emenda saía
+   alaranjada nas seções quentes e na lava. Duas exceções, pelo --fade:
+   as seções claras com foto devolvem para a própria cor (preto sobre creme
+   cairia em cima do texto escuro) e as seções sem foto zeram o degradê, porque
+   ele existe para dissolver a imagem e ali não há imagem nenhuma. */
 .section-shell::after {
   z-index: -1;
   background:
     linear-gradient(
       180deg,
-      var(--fade, var(--cor-base, var(--cor-tinta))) 0%,
+      var(--fade, #000) 0%,
       transparent var(--fade-tam),
       transparent calc(100% - var(--fade-tam)),
-      var(--fade, var(--cor-base, var(--cor-tinta))) 100%
+      var(--fade, #000) 100%
     ),
     var(--veu, var(--veu-escuro));
 }
+.section-shell.fundo-pronto { --fundo-ativo: var(--fundo); }
 
 .hero {
-  /* A faixa de cima escurece o trecho onde o logo e o menu passam por cima da
-     foto; a de baixo segura os botões. O miolo fica leve para o metal
-     incandescente da imagem aparecer. */
+  /* Sem degradê de separação: o hero abre a página e o véu abaixo já fecha a
+     base sozinho. */
+  --fade: transparent;
+  /* A foto é preto e branco: o metal vira luz pura e o calor entra pelo
+     .hero__heat, em laranja da marca. O véu fecha o topo (logo e menu) e a base
+     (botões). Na horizontal ele segura só o suficiente para o texto de apoio da
+     direita: a 94% de antes a foto sumia daquele lado. */
   --veu:
-    linear-gradient(180deg, rgba(0,0,0,.8), transparent 22%),
-    linear-gradient(0deg, rgba(0,0,0,.88), transparent 58%),
-    linear-gradient(90deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.4) 52%, rgba(0,0,0,.6) 100%);
+    linear-gradient(180deg, rgba(0,0,0,.6), transparent 20%),
+    linear-gradient(0deg, rgba(0,0,0,.72), transparent 46%),
+    linear-gradient(90deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.24) 46%, rgba(0,0,0,.56) 82%);
   min-height: min(960px, 100svh);
   display: grid;
-  align-items: end;
+  /* Conteúdo no centro vertical, não grudado na base: com o topo da tela
+     vazio o hero parecia inacabado. */
+  align-items: center;
 }
 .hero__media { position: absolute; z-index: -2; inset: 0; overflow: hidden; background: #090706; }
-/* Sem grayscale: a imagem da marca é feita para mostrar o metal incandescente. */
-.hero__media img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(1.04); }
-.hero__heat { position: absolute; z-index: 1; inset: 0; opacity: .38; mix-blend-mode: color-dodge; background: radial-gradient(circle at 29% 73%, rgba(255,184,77,.85), rgba(232,56,13,.28) 16%, transparent 35%); animation: breathe 5s ease-in-out infinite alternate; }
-.hero__content { position: relative; z-index: 2; width: var(--container); margin: 0 auto; padding: calc(var(--altura-header) + clamp(1rem, 4vh, 3.5rem)) 0 clamp(2rem, 5vh, 4.5rem); display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .55fr); gap: clamp(.9rem, 2vh, 1.5rem) 6vw; align-items: end; }
+.hero__media picture { display: contents; }
+.hero__media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.14); }
+.hero__heat { position: absolute; z-index: 1; inset: 0; opacity: .38; mix-blend-mode: color-dodge; background: radial-gradient(circle at 26% 76%, rgba(255,184,77,.85), rgba(232,56,13,.28) 16%, transparent 35%); animation: breathe 5s ease-in-out infinite alternate; }
+.hero__content { position: relative; z-index: 2; width: var(--container); margin: 0 auto; padding: calc(var(--altura-header) + clamp(1.5rem, 5vh, 4rem)) 0 clamp(3rem, 7vh, 5.5rem); display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .55fr); gap: clamp(.9rem, 2vh, 1.5rem) 6vw; align-items: end; }
 .hero__content > * { min-width: 0; }
 .hero__top-meta { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .eyebrow { grid-column: 1 / -1; margin: 0; display: flex; align-items: center; gap: .75rem; font-family: var(--fonte-mono); font-size: .67rem; line-height: 1.4; letter-spacing: .1em; text-transform: uppercase; }
@@ -188,10 +203,14 @@ em { color: var(--cor-lava); font-style: italic; }
 .section-pad { position: relative; width: var(--container); margin-inline: auto; padding-block: var(--pad); z-index: 1; }
 
 /* 2. MANIFESTO SECTION */
+/* Grafite chapado, sem foto. O nether da paleta em vez do quase-preto de antes:
+   o hero acima termina praticamente preto e as duas seções virariam um bloco só.
+   O texto continua claro, então nada muda dentro da seção. */
 .manifesto-section {
-  --cor-base: #0c0807;
-  --fundo: url('/fundos/manifesto.jpg');
-  --veu: rgba(0, 0, 0, .78);
+  --cor-base: var(--cor-nether);
+  --fade: transparent;
+  --fundo: none;
+  --veu: transparent;
 }
 .manifesto {
   min-height: 75svh;
@@ -227,11 +246,15 @@ em { color: var(--cor-lava); font-style: italic; }
   flex-wrap: wrap;
 }
 
-/* 3. PROCESSO SECTION */
+/* 3. PROCESSO SECTION
+   Seção clara sem foto: só a cor papel da marca. Sem imagem o véu também sai,
+   senão o ::after continuaria pintando preto por cima do creme. */
 .process-section {
-  --cor-base: #0b0706;
-  --fundo: url('/fundos/processo.jpg');
-  --veu: rgba(0, 0, 0, .8);
+  --cor-base: var(--cor-papel);
+  --fade: transparent;
+  --fundo: none;
+  --veu: transparent;
+  color: var(--cor-tinta);
 }
 .process {
   display: grid;
@@ -253,17 +276,19 @@ em { color: var(--cor-lava); font-style: italic; }
   grid-template-columns: 3rem 1fr 1rem;
   gap: 1.4rem;
   padding: 2.3rem 0;
-  border-bottom: 1px solid rgba(242,237,228,.16);
+  border-bottom: 1px solid rgba(15,11,10,.16);
 }
 .process__number, .work-card__copy > span, .work-quote span, .principles article > span {
   font-family: var(--fonte-mono);
   font-size: .66rem;
   letter-spacing: .1em;
 }
-.process__number { color: var(--cor-lava); }
+/* Lava puro sobre papel não passa em texto pequeno; #8f2309 é o tom escuro
+   que as outras seções claras já usam nos rótulos em mono. */
+.process__number { color: #8f2309; }
 /* product-card e case-card ficaram de fora deste grupo e caíam na fonte de
    texto, em caixa baixa, num corpo pensado para a display condensada. */
-.process__item h3, .work-card h3, .principles h3, .product-card h3, .case-card h3 {
+.process__item h3, .work-card h3, .principles h3, .product-card h3 {
   margin: 0 0 .55rem;
   font-family: var(--fonte-display);
   font-size: clamp(1.65rem, 2.5vw, 2.4rem);
@@ -273,7 +298,7 @@ em { color: var(--cor-lava); font-style: italic; }
 .process__item p {
   max-width: 31rem;
   margin: 0;
-  color: rgba(242,237,228,.64);
+  color: rgba(15,11,10,.68);
   line-height: 1.55;
 }
 .process__spark {
@@ -281,17 +306,17 @@ em { color: var(--cor-lava); font-style: italic; }
   height: 7px;
   margin-top: .5rem;
   border-radius: 50%;
-  background: rgba(242,237,228,.25);
+  background: rgba(15,11,10,.22);
   transition: background-color 220ms ease, box-shadow 220ms ease;
 }
 .process__item:hover .process__spark {
-  background: var(--cor-ambar);
-  box-shadow: 0 0 18px var(--cor-lava);
+  background: var(--cor-lava);
+  box-shadow: 0 0 16px rgba(232,56,13,.55);
 }
 .process__promise {
   max-width: 30rem;
   margin: 1.6rem 0 0;
-  color: var(--cor-ambar);
+  color: #8f2309;
   font-family: var(--fonte-mono);
   font-size: .68rem;
   line-height: 1.6;
@@ -303,7 +328,8 @@ em { color: var(--cor-lava); font-style: italic; }
    um véu preto aqui apagaria o texto escuro dos cards. */
 .work-section {
   --cor-base: var(--cor-papel);
-  --fundo: url('/fundos/trabalho.jpg');
+  --fade: var(--cor-base);
+  --fundo: url('/fundos/trabalho.webp');
   --veu: rgba(242, 237, 228, .9);
   color: var(--cor-tinta);
 }
@@ -399,7 +425,7 @@ em { color: var(--cor-lava); font-style: italic; }
 /* 5. PRINCÍPIOS SECTION */
 .principles-section {
   --cor-base: #120c0a;
-  --fundo: url('/fundos/principios.jpg');
+  --fundo: url('/fundos/principios.webp');
   --veu: rgba(0, 0, 0, .76);
 }
 .principles > h2 { margin: 0 0 5rem; }
@@ -424,7 +450,7 @@ em { color: var(--cor-lava); font-style: italic; }
 /* 6. DIAGNÓSTICO SECTION */
 .diagnostic-section {
   --cor-base: #0e0908;
-  --fundo: url('/fundos/diagnostico.jpg');
+  --fundo: url('/fundos/diagnostico.webp');
   --veu: rgba(0, 0, 0, .8);
 }
 .diagnostic__intro {
@@ -575,11 +601,14 @@ em { color: var(--cor-lava); font-style: italic; }
 }
 .diagnostic__result .text-link { color: var(--cor-papel); }
 
-/* 7. PERGUNTAS SECTION */
+/* 7. PERGUNTAS SECTION
+   Seção clara sem foto, mesmo tratamento do processo. */
 .faq-section {
-  --cor-base: #0b0706;
-  --fundo: url('/fundos/perguntas.jpg');
-  --veu: rgba(0, 0, 0, .82);
+  --cor-base: var(--cor-papel);
+  --fade: transparent;
+  --fundo: none;
+  --veu: transparent;
+  color: var(--cor-tinta);
 }
 /* A coluna do título estourava e o texto passava por cima das perguntas:
    coluna mais larga, corpo menor e min-width 0 nos dois lados. */
@@ -596,7 +625,7 @@ em { color: var(--cor-lava); font-style: italic; }
   gap: 1rem;
   margin-top: 2rem;
 }
-.faq__item { border-bottom: 1px solid rgba(242,237,228,.18); }
+.faq__item { border-bottom: 1px solid rgba(15,11,10,.16); }
 .faq__item summary {
   min-height: 90px;
   display: grid;
@@ -608,12 +637,12 @@ em { color: var(--cor-lava); font-style: italic; }
   font-size: clamp(1.05rem, 1.6vw, 1.35rem);
 }
 .faq__item summary::-webkit-details-marker { display: none; }
-.faq__item summary span { color: var(--cor-lava); font-family: var(--fonte-mono); font-size: .62rem; }
+.faq__item summary span { color: #8f2309; font-family: var(--fonte-mono); font-size: .62rem; }
 .faq__item summary i, .faq__item summary i::after {
   display: block;
   width: 14px;
   height: 1px;
-  background: var(--cor-papel);
+  background: var(--cor-tinta);
   transition: transform 220ms ease;
 }
 .faq__item summary i::after { content: ''; transform: rotate(90deg); }
@@ -622,7 +651,7 @@ em { color: var(--cor-lava); font-style: italic; }
   max-width: 36rem;
   margin: 0;
   padding: 0 3rem 2rem;
-  color: rgba(242,237,228,.64);
+  color: rgba(15,11,10,.68);
   line-height: 1.55;
 }
 
@@ -631,7 +660,7 @@ em { color: var(--cor-lava); font-style: italic; }
    sem o filtro laranja por cima. */
 .contact {
   --cor-base: var(--cor-tinta);
-  --fundo: url('/fundos/contato.jpg');
+  --fundo: url('/fundos/contato.webp');
   /* Mais fechado do lado do formulário, mais aberto do lado da foto. */
   --veu: linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.64) 50%, rgba(0,0,0,.44) 100%);
   min-height: 980px;
@@ -795,9 +824,9 @@ em { color: var(--cor-lava); font-style: italic; }
   line-height: 1.5;
   text-wrap: pretty;
 }
-.page-hero--products { --fundo: url('/fundos/produtos-hero.jpg'); }
+.page-hero--products { --fundo: url('/fundos/produtos-hero.webp'); }
 .page-hero--clients {
-  --fundo: url('/fundos/clientes-hero.jpg');
+  --fundo: url('/fundos/clientes-hero.webp');
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 3rem;
 }
@@ -826,7 +855,8 @@ em { color: var(--cor-lava); font-style: italic; }
 /* Seção clara: véu na cor papel pelo mesmo motivo da seção de trabalho. */
 .catalog-section {
   --cor-base: var(--cor-papel);
-  --fundo: url('/fundos/catalogo.jpg');
+  --fade: var(--cor-base);
+  --fundo: url('/fundos/catalogo.webp');
   --veu: rgba(242, 237, 228, .91);
   color: var(--cor-tinta);
 }
@@ -904,10 +934,14 @@ em { color: var(--cor-lava); font-style: italic; }
 .product-card li { position: relative; padding-left: 1.25rem; font-size: .92rem; }
 .product-card li::before { content: '↳'; position: absolute; left: 0; color: var(--cor-lava); }
 
+/* Seção clara sem foto: creme chapado, texto escuro. Sem imagem o véu sai
+   junto, e o degradê de separação também — não há nada a dissolver. */
 .cases-section {
-  --cor-base: var(--cor-tinta);
-  --fundo: url('/fundos/casos.jpg');
-  --veu: rgba(0, 0, 0, .82);
+  --cor-base: var(--cor-papel);
+  --fundo: none;
+  --veu: transparent;
+  --fade: transparent;
+  color: var(--cor-tinta);
 }
 .cases__heading { margin-bottom: clamp(4rem, 8vw, 8rem); }
 .cases__heading-top {
@@ -918,81 +952,263 @@ em { color: var(--cor-lava); font-style: italic; }
   flex-wrap: wrap;
   margin-bottom: 3rem;
 }
-.case-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: rgba(242,237,228,.18);
+/* PASTAS DE CLIENTE
+   Cada cliente virou uma pasta sobre a seção creme; o conteúdo abre num
+   <dialog> nativo, que já cuida de foco, Esc e inércia do resto da página. */
+.cases__nota {
+  max-width: 34rem;
+  margin: 1.6rem 0 0;
+  color: rgba(15,11,10,.66);
+  line-height: 1.55;
 }
-.case-card { min-width: 0; background: var(--cor-tinta); }
-.case-card > a { height: 100%; display: flex; flex-direction: column; }
-.case-card__media { aspect-ratio: 16 / 10; overflow: hidden; background: #211715; }
-.case-card__media img {
+.folder-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.folder {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top;
-  filter: saturate(.72);
-  transition-property: transform, filter;
-  transition-duration: 600ms;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  color: var(--cor-tinta);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* A aba saliente é o que faz o cartão ler como pasta e não como card comum. */
+.folder__aba {
+  align-self: flex-start;
+  padding: .55rem 1.1rem;
+  color: var(--cor-papel);
+  background: var(--cor-tinta);
+  font-family: var(--fonte-mono);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition-property: color, background-color;
+  transition-duration: 220ms;
   transition-timing-function: cubic-bezier(.2,0,0,1);
 }
-.case-card a:hover .case-card__media img {
-  transform: scale(1.025);
-  filter: saturate(1);
-}
-.case-card__copy { flex: 1; padding: clamp(1.7rem, 3vw, 3rem); }
-.case-card__copy > div {
+.folder__corpo {
+  flex: 1;
   display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 2.5vw, 2.2rem);
+  box-shadow: inset 0 0 0 1px rgba(15,11,10,.22);
+  transition-property: color, background-color;
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(.2,0,0,1);
+}
+.folder__setor {
+  color: #8f2309;
+  font-family: var(--fonte-mono);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color 240ms cubic-bezier(.2,0,0,1);
+}
+.folder__nome {
+  margin-top: .7rem;
+  font-family: var(--fonte-display);
+  /* Teto baixo de propósito: nomes de uma palavra só, como TokenBitz, partiam
+     no meio na coluna estreita do desktop. break-word só quebra no aperto,
+     ao contrário de anywhere, que quebrava assim que dava. */
+  font-size: clamp(1.7rem, 2.2vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+.folder__resumo {
+  margin-top: .7rem;
+  color: rgba(15,11,10,.64);
+  font-size: .95rem;
+  line-height: 1.5;
+  transition: color 240ms cubic-bezier(.2,0,0,1);
+}
+/* Miniaturas sobrepostas: mostram que há mais de uma tela lá dentro. */
+.folder__pilha { margin-top: auto; padding-top: 1.6rem; display: flex; }
+.folder__pilha > * {
+  width: 78px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  background: #211715;
+  box-shadow: 0 0 0 1px rgba(242,237,228,.9), 0 8px 18px rgba(15,11,10,.28);
+  filter: saturate(.7);
+  transition-property: filter, margin-left;
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(.2,0,0,1);
+}
+.folder__pilha > * + * { margin-left: -24px; }
+.folder__pilha-vazia {
+  display: grid;
+  place-content: center;
+  color: var(--cor-tinta);
+  background: var(--cor-lava);
+  font-family: var(--fonte-display);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+.folder__acao {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  font-family: var(--fonte-mono);
+  font-size: .64rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.folder__acao b { color: var(--cor-lava); font-weight: 400; transition: transform 220ms cubic-bezier(.2,0,0,1); }
+/* Hover inverte o cartão, mesmo gesto dos cards do catálogo. */
+.folder:hover .folder__corpo, .folder:focus-visible .folder__corpo { color: var(--cor-papel); background: var(--cor-tinta); }
+.folder:hover .folder__setor, .folder:focus-visible .folder__setor { color: var(--cor-magma); }
+.folder:hover .folder__resumo, .folder:focus-visible .folder__resumo { color: rgba(242,237,228,.68); }
+.folder:hover .folder__aba, .folder:focus-visible .folder__aba { color: var(--cor-tinta); background: var(--cor-lava); }
+.folder:hover .folder__acao b { transform: translateX(5px); }
+.folder:hover .folder__pilha > * { filter: saturate(1); }
+.folder:hover .folder__pilha > * + * { margin-left: -12px; }
+
+/* MODAL DA PASTA
+   Fica escuro de propósito: é uma camada por cima da página, não parte dela. */
+.modal {
+  width: min(92vw, 1080px);
+  max-width: none;
+  max-height: 88svh;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  color: var(--cor-papel);
+  background: transparent;
+  overflow: visible;
+}
+.modal::backdrop { background: rgba(0,0,0,.82); }
+.modal__caixa {
+  max-height: 88svh;
+  display: flex;
+  flex-direction: column;
+  background: #0c0807;
+  box-shadow: 0 40px 90px rgba(0,0,0,.65), inset 0 0 0 1px rgba(242,237,228,.16);
+}
+.modal__topo {
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  border-bottom: 1px solid rgba(242,237,228,.16);
+}
+.modal__setor {
+  margin: 0 0 .6rem;
   color: var(--cor-lava);
+  font-family: var(--fonte-mono);
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.modal__topo h2 {
+  margin: 0;
+  font-family: var(--fonte-display);
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+  font-weight: 900;
+  line-height: .9;
+  text-transform: uppercase;
+}
+.modal__fechar {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-content: center;
+  border: 1px solid rgba(242,237,228,.24);
+  color: var(--cor-papel);
+  background: transparent;
+  font-size: .95rem;
+  cursor: pointer;
+  transition-property: color, background-color;
+  transition-duration: 200ms;
+}
+.modal__fechar:hover { color: var(--cor-tinta); background: var(--cor-papel); }
+.modal__lista {
+  display: grid;
+  gap: clamp(1.6rem, 3vw, 2.6rem);
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.modal__projeto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+}
+.modal__projeto + .modal__projeto {
+  padding-top: clamp(1.6rem, 3vw, 2.6rem);
+  border-top: 1px solid rgba(242,237,228,.14);
+}
+.modal__print {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #211715;
+  box-shadow: inset 0 0 0 1px rgba(242,237,228,.12);
+}
+.modal__print img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.modal__print-vazio {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  color: var(--cor-tinta);
+  background: var(--cor-lava);
+  font-family: var(--fonte-display);
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -.06em;
+}
+.modal__texto { min-width: 0; }
+.modal__tipo {
+  margin: 0 0 .8rem;
+  color: rgba(242,237,228,.55);
   font-family: var(--fonte-mono);
   font-size: .62rem;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.case-card h3 { margin: 3rem 0 1rem; font-size: clamp(2.4rem, 4vw, 4.6rem); line-height: .88; }
-.case-card p {
-  max-width: 38rem;
-  margin: 0 0 2rem;
-  color: rgba(242,237,228,.64);
-  line-height: 1.5;
-}
-.case-card .text-link { color: var(--cor-papel); }
-.case-card .text-link b { font-weight: 400; }
-.case-card--agent { display: flex; flex-direction: column; }
-.case-card__agent-visual {
-  aspect-ratio: 16 / 10;
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto;
-  color: var(--cor-tinta);
-  background: var(--cor-lava);
-  overflow: hidden;
-}
-.case-card__agent-visual span {
-  align-self: center;
+.modal__projeto h3 {
+  margin: 0 0 .8rem;
   font-family: var(--fonte-display);
-  font-size: clamp(10rem, 18vw, 19rem);
-  font-weight: 900;
-  line-height: .6;
-  letter-spacing: -.1em;
-}
-.case-card__agent-visual i, .case-card__agent-visual b {
-  font-family: var(--fonte-mono);
-  font-size: .7rem;
-  font-style: normal;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
-.case-card__agent-visual b { grid-column: 1 / -1; font-size: clamp(2rem, 4vw, 4.5rem); }
-.case-card__private { color: var(--cor-ambar); font-family: var(--fonte-mono); font-size: .65rem; text-transform: uppercase; }
+.modal__descricao {
+  margin: 0 0 1.3rem;
+  color: rgba(242,237,228,.64);
+  line-height: 1.55;
+}
+/* Endereço em caixa baixa: é uma URL, não um rótulo. */
+.modal__link { color: var(--cor-papel); font-size: .82rem; text-transform: none; overflow-wrap: anywhere; }
+.modal__link b { color: var(--cor-lava); font-weight: 400; }
+.modal__privado { color: #8f2309; font-family: var(--fonte-mono); font-size: .65rem; text-transform: uppercase; }
+body[data-modal-aberto] { overflow: hidden; }
 
 .page-cta {
   --cor-base: var(--cor-lava);
-  --fundo: url('/fundos/cta.jpg');
+  --fundo: url('/fundos/cta.webp');
   --veu: rgba(232, 56, 13, .84);
+  /* Sem degradê de separação: o bloco de lava já é o corte entre as seções, e
+     o preto nas bordas comia justamente o laranja da marca. */
+  --fade: transparent;
   min-height: 720px;
   padding: var(--pad) var(--margem-container);
   display: flex;
@@ -1019,29 +1235,42 @@ em { color: var(--cor-lava); font-style: italic; }
 /* Footer & 404 */
 .footer-wrap {
   --cor-base: #090605;
-  --fundo: url('/fundos/rodape.jpg');
+  --fundo: url('/fundos/rodape.webp');
   --veu: rgba(0, 0, 0, .86);
 }
 .footer {
   width: var(--container);
-  min-height: 180px;
   margin-inline: auto;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  padding-block: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  flex-wrap: wrap;
+}
+/* Mascote e frase formam um bloco só. Soltos em colunas separadas, o Foguinho
+   a 64px ficava três vezes maior que o texto ao lado e puxava o olho sozinho. */
+.footer__marca { display: flex; align-items: center; gap: 1.1rem; }
+.footer__marca a { min-height: 44px; display: inline-flex; align-items: center; }
+.footer__marca img { width: 40px; }
+.footer__marca p { margin: 0; color: rgba(242,237,228,.58); font-size: .95rem; line-height: 1.4; }
+.footer__meta {
+  display: flex;
   align-items: center;
   gap: 2rem;
+  font-family: var(--fonte-mono);
+  font-size: .62rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
-.footer__marca { display: inline-flex; align-items: center; min-height: 44px; }
-.footer__marca img { width: 64px; }
-.footer p { color: rgba(242,237,228,.5); margin: 0; }
-.footer div { display: flex; align-items: center; gap: 2rem; font-family: var(--fonte-mono); font-size: .62rem; text-transform: uppercase; }
-.footer a { min-height: 44px; display: inline-flex; align-items: center; }
+.footer__meta a { min-height: 44px; display: inline-flex; align-items: center; }
+.footer__meta span { color: rgba(242,237,228,.45); }
 
 /* O Foguinho ao lado da laje partida é o próprio fundo desta página (a imagem
    está espelhada, então o mascote cai na metade direita, longe do texto). */
 .not-found-section {
   --cor-base: #0b0706;
-  --fundo: url('/fundos/404.jpg');
+  --fundo: url('/fundos/404.webp');
   --veu: linear-gradient(90deg, rgba(0,0,0,.86) 0 42%, rgba(0,0,0,.42) 72%, rgba(0,0,0,.58));
 }
 .not-found {
@@ -1082,8 +1311,7 @@ em { color: var(--cor-lava); font-style: italic; }
     width: 100%;
     transform: none;
     padding-inline: 4vw;
-    background: rgba(15,11,10,.94);
-    backdrop-filter: blur(12px);
+    background: rgba(15,11,10,.96);
     border-bottom: 1px solid rgba(242,237,228,.14);
     min-height: var(--altura-header);
     z-index: 95;
@@ -1141,21 +1369,30 @@ em { color: var(--cor-lava); font-style: italic; }
   }
 
   .hero {
-    --veu: linear-gradient(0deg, rgba(0,0,0,.95) 0%, rgba(0,0,0,.52) 62%, rgba(0,0,0,.74) 100%);
+    /* Fecha a base (botões) e o topo (header), deixa o meio respirar. */
+    --veu: linear-gradient(0deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.6) 48%, rgba(0,0,0,.45) 72%, rgba(0,0,0,.72) 100%);
     /* Exatamente uma tela: sem sobra e sem a próxima seção espiando. */
     min-height: 100svh;
-    align-items: end;
+    align-items: center;
     padding-top: var(--altura-header);
   }
-  .hero__media img { object-position: 32% center; }
+  /* Recorte retrato da foto desktop mantém o jato de metal no quadro. Com a
+     arte própria em 9:16 (hero-fundicao-mobile.jpg) o <source> assume. */
+  .hero__media img { object-position: 24% 42%; }
+  .hero__heat { opacity: .32; background-position: 0 0; animation: none; }
   .hero__content {
     grid-template-columns: minmax(0, 1fr);
-    padding-top: clamp(1.5rem, 5vh, 4rem);
-    padding-bottom: clamp(1.75rem, 4vh, 3.5rem);
+    gap: 1.1rem;
+    padding-top: clamp(1rem, 3vh, 2rem);
+    padding-bottom: clamp(2.5rem, 8vh, 5rem);
   }
   .hero h1 { font-size: clamp(2.6rem, min(11vw, 8.5vh), 6rem); }
+  .hero__intro { margin-bottom: 0; }
   .hero__intro, .hero__actions, .hero__note { grid-column: 1; }
-  .hero__top-meta { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  /* Eyebrow e sticker dividem a mesma linha: solto no meio da coluna o
+     Foguinho parecia um elemento perdido. */
+  .hero__top-meta { flex-wrap: nowrap; }
+  .sticker--wave { width: 46px; }
 
   .manifesto__grid, .process, .faq, .diagnostic__intro, .diagnostic__panel, .work__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1184,19 +1421,19 @@ em { color: var(--cor-lava); font-style: italic; }
   .work__top-sticker { margin-bottom: 3rem; }
 
   .principles__grid { grid-template-columns: minmax(0, 1fr); }
-  .principles article { min-height: auto; border-left: 1px solid rgba(242,237,228,.2); }
+  /* Sem backdrop-filter: o blur por cima da foto custa caro em celular. */
+  .principles article { min-height: auto; border-left: 1px solid rgba(242,237,228,.2); background: rgba(15,11,10,.62); backdrop-filter: none; }
   .principles h3 { margin-top: 2.5rem; }
 
-  .contact { min-height: 0; padding-block: 6rem 0; }
-  .contact__inner { min-height: 0; grid-template-columns: minmax(0, 1fr); gap: 4rem; }
+  /* Véu mais fechado: em pé a lava ocupa a tela toda atrás do formulário.
+     Com o mascote escondido, a base precisa do respiro que ele ocupava. */
+  .contact { --veu: rgba(0, 0, 0, .84); min-height: 0; padding-block: 5rem 4.5rem; }
+  .contact__inner { min-height: 0; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
   .contact__inner > * { min-width: 0; }
-  .contact__flare { filter: none; }
-  .contact__mascot {
-    position: static;
-    width: min(68vw, 430px);
-    place-self: center;
-    transform: none;
-  }
+  .contact__flare { filter: none; opacity: .3; }
+  /* Sem coluna à direita, o mascote só ocupava espaço entre o botão de enviar
+     e o rodapé. Some no celular; o Foguinho do rodapé continua logo abaixo. */
+  .contact__mascot { display: none; }
 
   /* No celular a coluna escura do véu cobria a foto inteira. */
   .page-hero {
@@ -1207,11 +1444,20 @@ em { color: var(--cor-lava); font-style: italic; }
   .page-hero--clients { grid-template-columns: minmax(0, 1fr); }
   .page-hero__index { display: none; }
 
-  .catalog__heading, .product-grid, .case-grid { grid-template-columns: minmax(0, 1fr); }
+  .catalog__heading, .product-grid, .modal__projeto { grid-template-columns: minmax(0, 1fr); }
   .product-card { min-height: 430px; }
 
-  .footer { padding-block: 3rem; grid-template-columns: 1fr; gap: 1.5rem; }
-  .footer div { flex-wrap: wrap; gap: 1.2rem; }
+  .footer { padding-block: 3rem; flex-direction: column; align-items: flex-start; gap: 1.6rem; }
+  /* Empilhado, os dois blocos precisam de uma divisa: sem a linha, a frase da
+     marca e os links viravam quatro linhas soltas uma embaixo da outra. */
+  .footer__meta {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .6rem 1.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid rgba(242,237,228,.12);
+  }
 
   /* Sem coluna direita no celular: o mascote do fundo vem para o centro e o
      véu sobe para o texto continuar legível por cima dele. */
@@ -1225,8 +1471,25 @@ em { color: var(--cor-lava); font-style: italic; }
   /* Stickers grandes encolhem para não empurrar o texto ao lado. */
   .manifesto__badge .sticker,
   .process__heading-sticker .sticker,
-  .work__top-sticker .sticker,
-  .faq__heading-sticker .sticker { width: 62px; }
+  .work__top-sticker .sticker { width: 62px; }
+
+  /* Sem coluna ao lado do título, o Foguinho das perguntas sobrava entre o
+     título e a primeira pergunta. Some no celular. */
+  .faq__heading-sticker { display: none; }
+
+  /* Fundos em retrato (720 × 1280), gerados por scripts/fundos.mjs a partir
+     de fundos-src/mobile/. Metade do peso e sem o recorte cego que a foto
+     paisagem sofria em pé. */
+  .work-section { --fundo: url('/fundos/mobile/trabalho.webp'); }
+  .principles-section { --fundo: url('/fundos/mobile/principios.webp'); }
+  .diagnostic-section { --fundo: url('/fundos/mobile/diagnostico.webp'); }
+  .contact { --fundo: url('/fundos/mobile/contato.webp'); }
+  .page-hero--products { --fundo: url('/fundos/mobile/produtos-hero.webp'); }
+  .page-hero--clients { --fundo: url('/fundos/mobile/clientes-hero.webp'); }
+  .catalog-section { --fundo: url('/fundos/mobile/catalogo.webp'); }
+  .page-cta { --fundo: url('/fundos/mobile/cta.webp'); }
+  .footer-wrap { --fundo: url('/fundos/mobile/rodape.webp'); }
+  .not-found-section { --fundo: url('/fundos/mobile/404.webp'); }
 }
 
 /* Com o menu aberto o fundo não rola atrás do painel. */
@@ -1276,7 +1539,7 @@ body[data-menu-aberto] { overflow: hidden; }
   }
   .faq__item p { padding-left: 2.6rem; }
 
-  .contact { min-height: 0; }
+  .contact { min-height: 0; padding-top: 4rem; }
   .contact h2 { font-size: clamp(2.8rem, 13vw, 4.6rem); }
   .contact h2 em { overflow-wrap: anywhere; }
   .contact-form__row, .contact-form__footer { grid-template-columns: 1fr; }
@@ -1317,17 +1580,17 @@ body[data-menu-aberto] { overflow: hidden; }
   }
   .product-card { min-height: 380px; padding: 2rem 1.4rem; }
   .product-card h3 { font-size: clamp(2rem, 8vw, 3.4rem); }
-  .case-card h3 { font-size: clamp(1.8rem, 7vw, 2.8rem); }
   .page-cta { min-height: 560px; }
   .page-cta h2 { font-size: clamp(3rem, 12vw, 5.5rem); }
 
   .manifesto__badge .sticker,
   .process__heading-sticker .sticker,
-  .work__top-sticker .sticker,
-  .faq__heading-sticker .sticker { width: 54px; }
+  .work__top-sticker .sticker { width: 54px; }
   .work__top-sticker { margin-bottom: 2rem; }
   .not-found { padding-block: 7rem 3rem; }
-  .footer__marca img { width: 56px; }
+  .footer__marca { gap: .9rem; }
+  .footer__marca img { width: 32px; }
+  .footer__marca p { font-size: .88rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

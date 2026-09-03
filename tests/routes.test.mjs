@@ -68,3 +68,43 @@ test('os textos das subpáginas mantêm contraste sobre papel e lava', async () 
   assert.match(rotuloCatalogo, /#8f2309/);
   assert.match(textoCta, /var\(--cor-tinta\)/);
 });
+
+test('cada cliente vira uma pasta que abre um modal com telas e endereço', async () => {
+  // Cenário
+  const pagina = await readFile(new URL('pages/clientes.astro', raiz), 'utf8');
+  const estilos = await readFile(new URL('styles/global.css', raiz), 'utf8');
+
+  // Ação
+  const botoes = pagina.match(/<button[^>]+data-abrir=/g) ?? [];
+  const dialogos = pagina.match(/<dialog[^>]+class="modal"/g) ?? [];
+
+  // Validação
+  assert.equal(botoes.length, 1, 'as pastas saem de um só laço sobre os clientes');
+  assert.equal(dialogos.length, 1, 'os modais saem de um só laço sobre os clientes');
+  assert.match(pagina, /aria-haspopup=["']dialog["']/);
+  assert.match(pagina, /aria-labelledby=\{`modal-titulo-\$\{pasta\.id\}`\}/);
+  assert.match(pagina, /showModal\(\)/);
+  // Fechar precisa funcionar pelo botão e pelo clique no fundo.
+  assert.match(pagina, /data-fechar/);
+  assert.match(pagina, /evento\.target === dialogo/);
+  // O <dialog> trata o Esc sozinho; o evento close é que devolve a rolagem.
+  assert.match(pagina, /removeAttribute\('data-modal-aberto'\)/);
+  assert.match(estilos, /body\[data-modal-aberto\] \{ overflow: hidden; \}/);
+});
+
+test('a pasta mostra quantos projetos guarda e cada projeto leva o seu link', async () => {
+  // Cenário
+  const pagina = await readFile(new URL('pages/clientes.astro', raiz), 'utf8');
+
+  // Ação
+  const clientes = pagina.match(/^\s{4}cliente: '/gm) ?? [];
+  const semEndereco = pagina.match(/url: null/g) ?? [];
+
+  // Validação
+  assert.equal(clientes.length, 4, 'a página agrupa os seis projetos em quatro pastas');
+  assert.match(pagina, /contagem\(pasta\.projetos\.length\)/);
+  assert.equal(semEndereco.length, 1, 'só o bot de Telegram fica sem endereço público');
+  assert.match(pagina, /Projeto sem endereço público/);
+  // O endereço aparece legível, sem o https na frente.
+  assert.match(pagina, /enderecoVisivel\(projeto\.url\)/);
+});

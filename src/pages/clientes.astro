@@ -11,13 +11,87 @@ import supremus from '../assets/clients/supremus.webp';
 import tokenbitz from '../assets/clients/tokenbitz.webp';
 import sticker03 from '../assets/stickers/sticker-03.png';
 
-const projetos = [
-  { numero: '01', nome: 'Supremus — IBRACIV', tipo: 'Site · Mercado imobiliário', descricao: 'Página de um programa de mentoria, com depoimentos e um caminho claro até a inscrição.', imagem: supremus, url: 'https://supremus.ibraciv.com/' },
-  { numero: '02', nome: 'Análise — IBRACIV', tipo: 'Ferramenta · Vendas', descricao: 'Ferramenta que faz perguntas ao corretor e devolve um resultado personalizado no fim.', imagem: analise, url: 'https://analise.ibraciv.com/' },
-  { numero: '03', nome: 'TokenBitz', tipo: 'Site em vários idiomas', descricao: 'Site internacional em vários idiomas, ligado aos documentos e aos dados do projeto.', imagem: tokenbitz, url: 'https://tokenbitz.info/' },
-  { numero: '04', nome: 'Destiny DAO — Docs', tipo: 'Documentação', descricao: 'Portal de documentação com menu lateral, gráficos e conteúdo em mais de dez idiomas.', imagem: destiny, url: 'https://doc.destinydao.org/' },
-  { numero: '05', nome: 'Portfólio experimental', tipo: 'Projeto autoral', descricao: 'Site com vídeo, movimento e efeitos 3D, feito para testar ideias novas de interface.', imagem: portfolio, url: 'https://about-victor.netlify.app/' },
+// Uma pasta por cliente. O IBRACIV tem dois projetos, por isso a página passou
+// a agrupar em vez de listar seis cards soltos.
+const pastas = [
+  {
+    id: 'ibraciv',
+    cliente: 'IBRACIV',
+    setor: 'Mercado imobiliário',
+    resumo: 'Uma página de mentoria e uma ferramenta que conversa com o corretor.',
+    projetos: [
+      {
+        nome: 'Supremus — IBRACIV',
+        tipo: 'Site · Mercado imobiliário',
+        descricao: 'Página de um programa de mentoria, com depoimentos e um caminho claro até a inscrição.',
+        imagem: supremus,
+        url: 'https://supremus.ibraciv.com/',
+      },
+      {
+        nome: 'Análise — IBRACIV',
+        tipo: 'Ferramenta · Vendas',
+        descricao: 'Ferramenta que faz perguntas ao corretor e devolve um resultado personalizado no fim.',
+        imagem: analise,
+        url: 'https://analise.ibraciv.com/',
+      },
+    ],
+  },
+  {
+    id: 'tokenbitz',
+    cliente: 'TokenBitz',
+    setor: 'Projeto internacional',
+    resumo: 'Site em vários idiomas, ligado aos documentos e aos dados do projeto.',
+    projetos: [
+      {
+        nome: 'TokenBitz',
+        tipo: 'Site em vários idiomas',
+        descricao: 'Site internacional em vários idiomas, ligado aos documentos e aos dados do projeto.',
+        imagem: tokenbitz,
+        url: 'https://tokenbitz.info/',
+      },
+    ],
+  },
+  {
+    id: 'destiny-dao',
+    cliente: 'Destiny DAO',
+    setor: 'Documentação',
+    resumo: 'Portal de documentação com menu lateral, gráficos e mais de dez idiomas.',
+    projetos: [
+      {
+        nome: 'Destiny DAO — Docs',
+        tipo: 'Documentação',
+        descricao: 'Portal de documentação com menu lateral, gráficos e conteúdo em mais de dez idiomas.',
+        imagem: destiny,
+        url: 'https://doc.destinydao.org/',
+      },
+    ],
+  },
+  {
+    id: 'foundry',
+    cliente: 'Projetos próprios',
+    setor: 'Laboratório da Foundry',
+    resumo: 'O que a gente constrói para testar ideia nova antes de levar para cliente.',
+    projetos: [
+      {
+        nome: 'Portfólio experimental',
+        tipo: 'Projeto autoral',
+        descricao: 'Site com vídeo, movimento e efeitos 3D, feito para testar ideias novas de interface.',
+        imagem: portfolio,
+        url: 'https://about-victor.netlify.app/',
+      },
+      {
+        nome: 'Bot de IA para Telegram',
+        tipo: 'Automação · Inteligência artificial',
+        descricao: 'Atendente ligado a modelos de inteligência artificial, com filtros, controle anti-spam e painel para acompanhar tudo.',
+        imagem: null,
+        url: null,
+      },
+    ],
+  },
 ];
+
+const enderecoVisivel = (url: string) => url.replace(/^https:\/\//, '').replace(/\/$/, '');
+const contagem = (total: number) => (total === 1 ? 'Um projeto' : `${total} projetos`);
 ---
 
 <BaseLayout title="Clientes e projetos | Foundry" description="Uma seleção de sites, ferramentas e automações já entregues pela Foundry.">
@@ -40,35 +114,69 @@ const projetos = [
             <Image src={sticker03} alt="Foguinho aprovando com o polegar" width={84} densities={[1, 2]} class="sticker sticker--thumb sticker--solto" loading="lazy" />
           </div>
           <h2 id="titulo-projetos">Cada projeto pede<br /><em>uma solução diferente.</em></h2>
+          <p class="cases__nota">Abra a pasta de um cliente para ver as telas e o endereço de cada projeto.</p>
         </div>
 
-      <div class="case-grid">
-        {projetos.map((projeto) => (
-          <article class="case-card">
-            <a href={projeto.url} target="_blank" rel="noreferrer" aria-label={`Visitar ${projeto.nome}`}>
-              <div class="case-card__media"><Image src={projeto.imagem} alt={`Tela do projeto ${projeto.nome}`} widths={[520, 900]} sizes="(min-width: 900px) 48vw, 100vw" loading="lazy" /></div>
-              <div class="case-card__copy">
-                <div><span>{projeto.numero}</span><span>{projeto.tipo}</span></div>
-                <h3>{projeto.nome}</h3>
-                <p>{projeto.descricao}</p>
-                <span class="text-link">Visitar projeto <b aria-hidden="true">↗</b></span>
-              </div>
-            </a>
-          </article>
-        ))}
-
-        <article class="case-card case-card--agent">
-          <div class="case-card__agent-visual" aria-hidden="true"><span>IA</span><i>24/7</i><b>Telegram</b></div>
-          <div class="case-card__copy">
-            <div><span>06</span><span>Automação · Inteligência artificial</span></div>
-            <h3>Bot de IA para Telegram</h3>
-            <p>Atendente ligado a modelos de inteligência artificial, com filtros, controle anti-spam e painel para acompanhar tudo.</p>
-            <span class="case-card__private">Projeto sem endereço público</span>
-          </div>
-        </article>
-      </div>
-    </section>
+        <ul class="folder-grid">
+          {pastas.map((pasta) => (
+            <li>
+              <button class="folder" type="button" aria-haspopup="dialog" data-abrir={pasta.id}>
+                <span class="folder__aba">{contagem(pasta.projetos.length)}</span>
+                <span class="folder__corpo">
+                  <span class="folder__setor">{pasta.setor}</span>
+                  <span class="folder__nome">{pasta.cliente}</span>
+                  <span class="folder__resumo">{pasta.resumo}</span>
+                  <span class="folder__pilha" aria-hidden="true">
+                    {pasta.projetos.map((projeto) => (
+                      projeto.imagem
+                        ? <Image src={projeto.imagem} alt="" widths={[180, 360]} sizes="120px" loading="lazy" />
+                        : <span class="folder__pilha-vazia">IA</span>
+                    ))}
+                  </span>
+                  <span class="folder__acao">Abrir pasta <b aria-hidden="true">→</b></span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
+
+    {pastas.map((pasta) => (
+      <dialog class="modal" id={`pasta-${pasta.id}`} aria-labelledby={`modal-titulo-${pasta.id}`}>
+        <div class="modal__caixa">
+          <header class="modal__topo">
+            <div>
+              <p class="modal__setor">{pasta.setor}</p>
+              <h2 id={`modal-titulo-${pasta.id}`}>{pasta.cliente}</h2>
+            </div>
+            <button class="modal__fechar" type="button" data-fechar aria-label="Fechar a pasta">
+              <span aria-hidden="true">✕</span>
+            </button>
+          </header>
+
+          <div class="modal__lista">
+            {pasta.projetos.map((projeto) => (
+              <article class="modal__projeto">
+                <div class="modal__print">
+                  {projeto.imagem
+                    ? <Image src={projeto.imagem} alt={`Tela do projeto ${projeto.nome}`} widths={[520, 900]} sizes="(min-width: 760px) 42vw, 88vw" loading="lazy" />
+                    : <span class="modal__print-vazio" aria-hidden="true">IA</span>}
+                </div>
+                <div class="modal__texto">
+                  <p class="modal__tipo">{projeto.tipo}</p>
+                  <h3>{projeto.nome}</h3>
+                  <p class="modal__descricao">{projeto.descricao}</p>
+                  {projeto.url
+                    ? <a class="text-link modal__link" href={projeto.url} target="_blank" rel="noreferrer">{enderecoVisivel(projeto.url)} <b aria-hidden="true">↗</b></a>
+                    : <span class="modal__privado">Projeto sem endereço público</span>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </dialog>
+    ))}
 
     <section class="page-cta section-shell" aria-labelledby="titulo-cta-clientes">
       <h2 id="titulo-cta-clientes">Quer ser o próximo?<br /><em>Vamos conversar.</em></h2>
@@ -77,4 +185,34 @@ const projetos = [
     </section>
   </main>
   <Footer />
+
+  <script>
+    const abrirPasta = (id: string) => {
+      const dialogo = document.querySelector<HTMLDialogElement>(`#pasta-${id}`);
+      if (!dialogo) return;
+      dialogo.showModal();
+      document.body.toggleAttribute('data-modal-aberto', true);
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-abrir]').forEach((botao) => {
+      botao.addEventListener('click', () => abrirPasta(botao.dataset.abrir ?? ''));
+    });
+
+    document.querySelectorAll<HTMLDialogElement>('dialog.modal').forEach((dialogo) => {
+      dialogo.querySelector('[data-fechar]')?.addEventListener('click', () => dialogo.close());
+
+      // Clique no fundo escuro fecha. O alvo só é o próprio dialog quando o
+      // clique cai fora da caixa branca, que ocupa o miolo.
+      dialogo.addEventListener('click', (evento) => {
+        if (evento.target === dialogo) dialogo.close();
+      });
+
+      // Cobre também o Esc, que o <dialog> trata sozinho.
+      dialogo.addEventListener('close', () => {
+        if (!document.querySelector('dialog.modal[open]')) {
+          document.body.removeAttribute('data-modal-aberto');
+        }
+      });
+    });
+  </script>
 </BaseLayout>

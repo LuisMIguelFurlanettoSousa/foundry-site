@@ -57,7 +57,7 @@ npm run preview  # serve a build de produção
 
 ```text
 public/
-└── fundos/       # imagens de fundo das seções (ver docs/fundos.md)
+└── fundos/       # fundos das seções em WebP, gerados por `npm run fundos` (ver docs/fundos.md)
 scripts/
 └── stickers.mjs  # recorta os stickers do Foguinho a partir dos arquivos de marca
 src/
